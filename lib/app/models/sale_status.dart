@@ -1,0 +1,1 @@
+enum SaleStatus { NEW, SOLD }
