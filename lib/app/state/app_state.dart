@@ -34,7 +34,7 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  void login(dynamic logins) async {
+  void login(dynamic logins, Function onError) async {
     try {
       var response = await Api().dio.post("/users/authenticate", data: logins);
       user = User.fromJson(response.data['data']['user']);
@@ -47,6 +47,7 @@ class AppState with ChangeNotifier {
       sessionHasBeenFetched = true;
       notifyListeners();
     } catch (e) {
+      onError(e.toString());
       debugPrint(e.toString());
     }
   }

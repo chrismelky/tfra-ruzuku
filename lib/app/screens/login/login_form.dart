@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:tfra_mobile/app/shared/shared.dart';
 import 'package:tfra_mobile/app/state/app_state.dart';
 import 'package:tfra_mobile/app/theme/form_controls.dart';
 
@@ -14,10 +15,17 @@ class LoginForm extends StatefulWidget {
 
 class _LoginFormState extends State<LoginForm> {
   final _formKey = GlobalKey<FormBuilderState>();
+  late Function _showError;
+
+  @override
+  void initState() {
+    _showError = appError(context);
+    super.initState();
+  }
 
   void _onSumbit() {
     if (_formKey.currentState!.saveAndValidate()) {
-      context.read<AppState>().login(_formKey.currentState?.value);
+      context.read<AppState>().login(_formKey.currentState?.value, _showError);
     }
   }
 
