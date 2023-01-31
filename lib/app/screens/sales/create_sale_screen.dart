@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/models/client_type.dart';
 import 'package:tfra_mobile/app/models/sale.dart';
@@ -49,18 +50,25 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
 
   Future<void> openQrScanner() async {
     try {
-      String? cameraScanResult = await scanner.scan();
-      Map<String, dynamic> fromScanner = jsonDecode(cameraScanResult!);
-      List<Map<String, dynamic>> currentPackages =
-          _formKey.currentState!.fields['saleTransactionPackages']!.value!;
+      final cameraPerm = await Permission.camera.request();
+      if (cameraPerm.isGranted) {
+        String? cameraScanResult = await scanner.scan();
+        if (cameraScanResult != null) {
+          Map<String, dynamic> fromScanner = jsonDecode(cameraScanResult);
+          List<Map<String, dynamic>> currentPackages =
+              _formKey.currentState!.fields['saleTransactionPackages']!.value!;
 
-      bool exist = currentPackages
-          .any((element) => element['qrCodeNumber'] == fromScanner['qr']);
+          bool exist = currentPackages
+              .any((element) => element['qrCodeNumber'] == fromScanner['qr']);
 
-      if (!exist) {
-        currentPackages.add(SalePackage.fromScanner(fromScanner).toJson());
-        _formKey.currentState?.fields['saleTransactionPackages']
-            ?.didChange(currentPackages);
+          if (!exist) {
+            currentPackages.add(SalePackage.fromScanner(fromScanner).toJson());
+            _formKey.currentState?.fields['saleTransactionPackages']
+                ?.didChange(currentPackages);
+          }
+        }
+      } else {
+        throw Exception("No permission to use camera");
       }
     } catch (e) {
       debugPrint(e.toString());
@@ -321,4 +329,9 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
 
   Widget packageSubTitle(Map<String, dynamic> package) => Text(
       "brand: ${package['fertilizerDealerName']}, (${package['quantity']})kg");
+
+  @override
+  void dispose() {
+    super.dispose();
+  }
 }

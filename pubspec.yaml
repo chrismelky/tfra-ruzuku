@@ -43,6 +43,7 @@ dependencies:
   form_builder_validators: ^8.3.0
   dio: ^4.0.6
   qrscan: ^0.3.3
+  permission_handler: ^10.2.0
 
 dev_dependencies:
   flutter_test:

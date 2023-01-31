@@ -9,13 +9,21 @@ import 'package:tfra_mobile/app/screens/sales/sale-screen.dart';
 import 'package:tfra_mobile/app/screens/splash_screen.dart';
 import 'package:tfra_mobile/app/state/app_state.dart';
 
-class App extends StatelessWidget {
-  App({super.key});
+class App extends StatefulWidget {
+  const App({super.key});
+  @override
+  State<App> createState() => _AppState();
+}
+
+class _AppState extends State<App> {
+  @override
+  void initState() {
+    Provider.of<AppState>(context, listen: false).getSession();
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    appState.getSession();
-
     return Selector<AppState, bool>(
         selector: ((_, appState) => appState.sessionHasBeenFetched),
         builder: (context, sessionHasBeenFetched, child) =>
