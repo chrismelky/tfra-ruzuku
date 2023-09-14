@@ -3,8 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/models/sale.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';
-import 'package:tfra_mobile/app/state/app_state.dart';
-import 'package:tfra_mobile/app/state/sale_state.dart';
+import 'package:tfra_mobile/app/providers/app_state.dart';
+import 'package:tfra_mobile/app/providers/sale_state.dart';
 
 class SaleScreen extends StatefulWidget {
   const SaleScreen({super.key});

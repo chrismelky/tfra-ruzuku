@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tfra_mobile/app/config/api.dart';
+import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/models/client_type.dart';
 import 'package:tfra_mobile/app/models/searched_client.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tfra_mobile/app/app_const.dart';
-import 'package:tfra_mobile/app/config/api.dart';
+import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/models/user.dart';
+import 'package:tfra_mobile/app/utils/app_const.dart';
 
 class AppState with ChangeNotifier {
   bool isAuthenticated = false;
@@ -39,6 +39,7 @@ class AppState with ChangeNotifier {
       var response = await Api().dio.post("/users/authenticate", data: logins);
       user = User.fromJson(response.data['data']['user']);
       final String token = response.data['data']['token'];
+      debugPrint(response.data['data']['token']);
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
       await prefs.setString(AppConst.userKey, jsonEncode(user));

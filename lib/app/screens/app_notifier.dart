@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/state/app_state.dart';
+import 'package:tfra_mobile/app/providers/app_state.dart';
 
 class AppNotifier extends StatelessWidget {
   final Widget child;

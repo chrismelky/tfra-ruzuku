@@ -13,7 +13,7 @@ import 'package:tfra_mobile/app/models/sale_status.dart';
 import 'package:tfra_mobile/app/models/searched_client.dart';
 import 'package:tfra_mobile/app/screens/sales/search_client_dialog.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';
-import 'package:tfra_mobile/app/state/sale_state.dart';
+import 'package:tfra_mobile/app/providers/sale_state.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:tfra_mobile/app/theme/form_controls.dart';
 import 'package:intl/intl.dart';

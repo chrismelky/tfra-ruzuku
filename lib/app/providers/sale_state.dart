@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:tfra_mobile/app/config/api.dart';
+import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/models/sale.dart';
 
 class SaleState with ChangeNotifier {

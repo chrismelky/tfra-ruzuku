@@ -3,11 +3,12 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/screens/app_notifier.dart';
+import 'package:tfra_mobile/app/screens/declaration/declaration_list.dart';
 import 'package:tfra_mobile/app/screens/login/login.dart';
 import 'package:tfra_mobile/app/screens/sales/create_sale_screen.dart';
 import 'package:tfra_mobile/app/screens/sales/sale-screen.dart';
 import 'package:tfra_mobile/app/screens/splash_screen.dart';
-import 'package:tfra_mobile/app/state/app_state.dart';
+import 'package:tfra_mobile/app/providers/app_state.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -52,7 +53,7 @@ class _AppState extends State<App> {
             GoRoute(
                 path: '/',
                 builder: (BuildContext context, GoRouterState state) =>
-                    const SaleScreen(),
+                    const StockDeclarationScreen(),
                 routes: [
                   GoRoute(
                     path: "create-or-update",
