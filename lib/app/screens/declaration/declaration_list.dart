@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tfra_mobile/app/app_routes.dart';
 import 'package:tfra_mobile/app/listeners/message_listener.dart';
 import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
+import 'package:tfra_mobile/app/screens/declaration/add_declaration.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
 
 class StockDeclarationScreen extends StatefulWidget {
@@ -18,7 +20,12 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
     context.read<StockDeclarationProvider>().init();
   }
 
-  _addDeclaration() {}
+  _addDeclaration()  async {
+    final result = await appRouter.openDialogPage(const AddStockDeclarationScreen());
+    if (result != null && context.mounted) {
+      context.read<StockDeclarationProvider>().init();
+    }
+  }
 
 
   @override
