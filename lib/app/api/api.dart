@@ -96,6 +96,7 @@ class AppInterceptor extends Interceptor {
                     err.response?.data['error_description'] ??
                     'Bad request');
           case 401:
+            appState.logout();
             throw UnauthorizedException(err.requestOptions);
           case 403:
             throw PermissionDenied(err.requestOptions,  err.response?.data['message']);

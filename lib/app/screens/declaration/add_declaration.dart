@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/api/api.dart';
+import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
+import 'package:tfra_mobile/app/widgets/app_button.dart';
 import 'package:tfra_mobile/app/widgets/app_fetcher.dart';
 import 'package:tfra_mobile/app/widgets/app_form.dart';
 import 'package:tfra_mobile/app/widgets/app_input_dropdown.dart';
@@ -18,7 +21,7 @@ class AddStockDeclarationScreen extends StatefulWidget {
 }
 
 class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
-  final _complainForm = GlobalKey<FormBuilderState>();
+  final _declarationForm = GlobalKey<FormBuilderState>();
   final _premiseForm = GlobalKey<FormBuilderState>();
 
   final List<Map<String, dynamic>> _stockTypes = [
@@ -43,7 +46,8 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
     return AppBaseScreen(
         title: 'Add Declaration',
         child: SingleChildScrollView(
-            child: AppForm(formKey: _complainForm, controls: [
+            child:
+                AppForm(formKey: _declarationForm, initialValue: {}, controls: [
           AppInputDropDown(
             items: _stockTypes,
             name: 'declarationType',
@@ -64,7 +68,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
           ),
           const AppInputNumber(name: 'quantity', label: 'Quantity'),
           AppInputFormArray(
-            formKey: _premiseForm,
+            formKey: _declarationForm,
             name: 'declarationPremises',
             label: 'Premise Stock',
             uniqueKeyField: 'id',
@@ -80,7 +84,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
             ],
             formControls: [
               AppFetcher(
-                api: '/premises',
+                  api: '/premises',
                   builder: (items, isLoading) => AppInputDropDown(
                       items: items, name: 'premiseId', label: 'Premise')),
               AppInputNumber(
@@ -92,7 +96,23 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                 ],
               ),
             ],
-          )
+          ),
+          AppButton(onPress: () => _save(), label: "Submit")
         ])));
+  }
+
+  _save() async {
+    if (_declarationForm.currentState?.saveAndValidate() == true) {
+      var payload = _declarationForm.currentState?.value;
+      debugPrint(payload.toString());
+      try {
+        var resp = await Api().dio.post('/subsidy-declarations', data: payload);
+        if (mounted && [200, 201].contains(resp.statusCode)) {
+          Navigator.of(context).pop(true);
+        }
+      } catch (e) {
+        context.read<StockDeclarationProvider>().notifyError(e.toString());
+      }
+    }
   }
 }
