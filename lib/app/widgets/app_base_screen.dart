@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:tfra_mobile/app/app_routes.dart';
+import 'package:tfra_mobile/app/providers/app_state.dart';
+import 'package:tfra_mobile/app/widgets/app_menu_item.dart';
 
 class AppBaseScreen extends StatelessWidget {
   final String title;
@@ -21,6 +25,36 @@ class AppBaseScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: Drawer(
+          child: ListView(children: [
+        DrawerHeader(
+            decoration: const BoxDecoration(color: Colors.green),
+            child: Text("User ${context.select<AppState, String?>(
+              (value) => value.user?.name,
+            )}")),
+        SingleChildScrollView(
+            child: Column(children: const [
+          AppMenuItem(
+          icon: Icons.launch,
+          label: 'Stock Declaration',
+          route: AppRoutes.declaration),
+          AppMenuItem(
+          icon: Icons.launch,
+          label: 'Stock Transfer',
+          route: AppRoutes.transfer),
+          AppMenuItem(
+          icon: Icons.launch,
+          label: 'Receive Stock',
+          route: AppRoutes.receive),
+          AppMenuItem(
+          icon: Icons.point_of_sale_outlined,
+          label: 'Sales',
+          route: AppRoutes.sales),
+        ])),
+        TextButton(
+            onPressed: () => context.read<AppState>().logout(),
+            child: const Text("Logout"))
+      ])),
       appBar: AppBar(
         backgroundColor: Theme.of(context).primaryColor,
         title: Text(

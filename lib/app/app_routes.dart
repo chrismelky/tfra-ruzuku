@@ -6,11 +6,15 @@ import 'package:tfra_mobile/app/screens/app_notifier.dart';
 import 'package:tfra_mobile/app/screens/declaration/declaration_list.dart';
 import 'package:tfra_mobile/app/screens/login/login.dart';
 import 'package:tfra_mobile/app/screens/sales/create_sale_screen.dart';
+import 'package:tfra_mobile/app/screens/stock_transfer/stock_transfer_list.dart';
 
 class AppRoutes {
   static const String dashboard = "/";
-  static const String loan = "/loan";
-  static const String loanGuarantors = "/loan-guarantors";
+  static const String sales = "/sales";
+  static const String declaration = "/declaration";
+  static const String transfer = "/transfer";
+  static const String receive = "/receive";
+  static const String login = "/login";
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
   final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -46,8 +50,16 @@ class AppRoutes {
             ),
           ]),
       GoRoute(
-        path: '/login',
+        path: login,
         builder: (BuildContext context, GoRouterState state) => const Login(),
+      ),
+      GoRoute(
+        path: declaration,
+        builder: (BuildContext context, GoRouterState state) => const StockDeclarationScreen(),
+      ),
+      GoRoute(
+        path: transfer,
+        builder: (BuildContext context, GoRouterState state) => const StockTransferListScreen(),
       ),
     ];
   }

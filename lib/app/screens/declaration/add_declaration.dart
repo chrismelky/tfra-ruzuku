@@ -22,14 +22,11 @@ class AddStockDeclarationScreen extends StatefulWidget {
 
 class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
   final _declarationForm = GlobalKey<FormBuilderState>();
-  final _premiseForm = GlobalKey<FormBuilderState>();
 
   final List<Map<String, dynamic>> _stockTypes = [
     {'id': 'IMPORTATION', 'name': 'IMPORTATION'},
     {'id': 'MANUFACTURED', 'name': 'MANUFACTURED'}
   ];
-  int? _cropId;
-
   List<Map<String, dynamic>> products = List.empty(growable: true);
 
   loadProduct(int cropId) async {
