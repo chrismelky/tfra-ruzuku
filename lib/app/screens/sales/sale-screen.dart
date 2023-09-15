@@ -7,7 +7,9 @@ import 'package:tfra_mobile/app/models/sale.dart';
 import 'package:tfra_mobile/app/screens/sales/create_sale_screen.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';
 import 'package:tfra_mobile/app/providers/sale_state.dart';
+import 'package:tfra_mobile/app/utils/format_type.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
+import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
 
 class SaleScreen extends StatefulWidget {
   const SaleScreen({super.key});
@@ -53,26 +55,50 @@ class _SaleScreenState extends State<SaleScreen> {
             if (saleState.sales == null) {
               return const Text("No sales found");
             } else {
-              return ListView.builder(
-                  itemCount: saleState.sales?.length,
-                  itemBuilder: (context, index) {
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(saleState.sales![index].partyName!),
-                          subtitle: Text(
-                              "${saleState.sales![index].partyType!}, ${saleState.sales![index].transactionDate!} "),
-                          onTap: () => addSale(saleState.sales![index]),
-                          leading: CircleAvatar(
-                              child: Text(saleState.sales![index].saleStatus
-                                  .substring(0, 1))),
-                        ),
-                        const Divider(
-                          thickness: 1,
-                        )
-                      ],
-                    );
-                  });
+              return ListView.separated(
+                  itemBuilder: (_, idx) {
+                    if (idx < saleState.sales.length) {
+                      var sale = saleState.sales[idx];
+                      return AppDetailCard(
+                          title: sale.saleStatus,
+                          data: sale.toJson(),
+                          actionBuilder: (item) => Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.launch)),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.edit)),
+                                  const SizedBox(
+                                    width: 4,
+                                  ),
+                                  IconButton(
+                                      onPressed: () {},
+                                      icon: const Icon(Icons.list_alt_sharp))
+                                ],
+                              ),
+                          columns: [
+                            AppDetailColumn(
+                                header: 'Customer', value: sale.partyName),
+                            AppDetailColumn(
+                                header: 'Items',
+                                value: sale.saleTransactionPackages.length),
+                            AppDetailColumn(
+                                header: 'Quantity(kg)', value: sale.totalQuantity),
+                            AppDetailColumn(
+                                format: FormatType.currency,
+                                header: 'Amount (TZS)',
+                                value: sale.totalPrice),
+                          ]);
+                    }
+                  },
+                  separatorBuilder: (context, idx) => const Divider(),
+                  itemCount: saleState.sales.length);
             }
           },
         ),

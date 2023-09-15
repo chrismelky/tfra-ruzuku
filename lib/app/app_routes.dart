@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/providers/app_state.dart';
 import 'package:tfra_mobile/app/screens/app_notifier.dart';
+import 'package:tfra_mobile/app/screens/dashboard/dashboard_screen.dart';
 import 'package:tfra_mobile/app/screens/declaration/declaration_list.dart';
 import 'package:tfra_mobile/app/screens/login/login.dart';
 import 'package:tfra_mobile/app/screens/receive_stock/receive_stock_list.dart';
@@ -16,6 +17,7 @@ class AppRoutes {
   static const String declaration = "/declaration";
   static const String transfer = "/transfer";
   static const String receive = "/receive";
+  static const String invoice = "/invoice";
   static const String login = "/login";
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -44,7 +46,7 @@ class AppRoutes {
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) =>
-            const StockDeclarationScreen(),
+            const DashboardScreen(),
       ),
       GoRoute(
         path: login,

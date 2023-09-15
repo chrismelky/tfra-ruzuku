@@ -6,7 +6,7 @@ import 'package:tfra_mobile/app/providers/base_provider.dart';
 class SaleState extends BaseProvider {
   Sale? sale;
   final String api = "/sales";
-  List<Sale>? sales = List.empty(growable: true);
+  List<Sale> sales = List.empty(growable: true);
 
   void loadSales() async {
     try {

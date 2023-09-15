@@ -47,6 +47,14 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                     return AppDetailCard(
                         title: declaration.declarationType,
                         data: declaration.toJson(),
+                        actionBuilder: (item)=>Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            IconButton(onPressed: () {}, icon: Icon(Icons.launch)),
+                            SizedBox(width: 4,),
+                            IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+                          ],
+                        ),
                         columns: [
                           AppDetailColumn(
                               header: 'Product',
@@ -54,14 +62,18 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                           AppDetailColumn(
                               header: 'Quantity', value: declaration.quantity),
                           AppDetailColumn(
-                              header: 'Approved', value: declaration.approved),
+                              header: 'Approved',
+                              widget: declaration.approved
+                                  ? Icon(Icons.verified, color: Theme.of(context).primaryColor,)
+                                  : Icon(Icons.not_interested),
+                              value: declaration.approved),
                           AppDetailColumn(
                               header: 'QR generated',
+                              widget: declaration.approved
+                                  ? Icon(Icons.qr_code, color: Theme.of(context).primaryColor,)
+                                  : Icon(Icons.not_interested),
                               value: declaration.qrCodesGenerated)
                         ]);
-                    return ListTile(
-                      title: Text(declaration.productName),
-                    );
                   }
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -79,6 +91,4 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
       ),
     );
   }
-
-
 }

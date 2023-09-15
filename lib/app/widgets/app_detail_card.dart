@@ -6,11 +6,13 @@ class AppDetailColumn {
   final String header;
   final dynamic value;
   final FormatType? format;
+  final Widget? widget;
 
   AppDetailColumn({
     required this.header,
     required this.value,
     this.format,
+    this.widget,
   });
 }
 
@@ -28,7 +30,8 @@ class AppDetailCard extends StatelessWidget {
       required this.columns,
       this.actionBuilder,
       required this.title,
-      this.subTitle, this.elevation})
+      this.subTitle,
+      this.elevation})
       : super(key: key);
 
   static const TextStyle headerStyle = TextStyle(
@@ -56,8 +59,7 @@ class AppDetailCard extends StatelessWidget {
                     Text(
                       title,
                       style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold),
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     if (subTitle != null)
                       const SizedBox(
@@ -95,10 +97,10 @@ class AppDetailCard extends StatelessWidget {
                           style: headerStyle,
                         )),
                         SizedBox(
-                            child: Text(
-                          formatValue(col.format, col.value),
-                          style: cellStyle,
-                        )),
+                            child: col.widget ?? Text(
+                                    formatValue(col.format, col.value),
+                                    style: cellStyle,
+                                  )),
                       ],
                     ),
                     const SizedBox(
