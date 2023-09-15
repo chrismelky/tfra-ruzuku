@@ -6,17 +6,21 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:tfra_mobile/app/api/api.dart';
+import 'package:tfra_mobile/app/listeners/message_listener.dart';
 import 'package:tfra_mobile/app/models/client_type.dart';
 import 'package:tfra_mobile/app/models/sale.dart';
 import 'package:tfra_mobile/app/models/sale_package.dart';
 import 'package:tfra_mobile/app/models/sale_status.dart';
 import 'package:tfra_mobile/app/models/searched_client.dart';
+import 'package:tfra_mobile/app/screens/sales/otp_dialog.dart';
 import 'package:tfra_mobile/app/screens/sales/search_client_dialog.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';
 import 'package:tfra_mobile/app/providers/sale_state.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:tfra_mobile/app/theme/form_controls.dart';
 import 'package:intl/intl.dart';
+import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
 
 class CreateSaleScreen extends StatefulWidget {
   const CreateSaleScreen({super.key});
@@ -29,13 +33,11 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
   final _formKey = GlobalKey<FormBuilderState>();
   late Sale _selectedSale;
 
-  late Function _showMessage;
   late Function _showError;
 
   @override
   void initState() {
     _selectedSale = context.read<SaleState>().sale!;
-    _showMessage = appMessage(context);
     _showError = appError(context);
     super.initState();
   }
@@ -87,7 +89,7 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
         ?.didChange(currentPackages);
   }
 
-  void saveSale(SaleStatus byStatus) {
+  void saveSale(SaleStatus byStatus) async {
     if (_formKey.currentState!.saveAndValidate()) {
       Map<String, dynamic> payload = {
         ..._formKey.currentState!.value,
@@ -96,27 +98,63 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
         "transactionDate": DateFormat('yyyy-MM-dd')
             .format(_formKey.currentState!.fields["transactionDate"]!.value)
       };
-
-      context
-          .read<SaleState>()
-          .saveSale(payload, _showMessage, _showError)
-          .then((isSaved) {
-        debugPrint(isSaved.toString());
-        if (isSaved) {
-          context.go("/");
-          Provider.of<SaleState>(context, listen: false).loadSales(_showError);
+      if (byStatus == SaleStatus.SOLD) {
+        var resp = await Api().dio.post("/sales/generate-otp", data: payload);
+        if (resp.statusCode == 200 && mounted) {
+          String? otp = await otpDialog(context, payload);
+          if (otp != null && mounted) {
+            context.read<SaleState>().saveSale(payload, otp).then((isSaved) {
+              if (isSaved) {
+                Navigator.of(context).pop(true);
+              }
+            });
+          }
         }
-      });
+      } else {
+        context.read<SaleState>().saveSale(payload, null).then((isSaved) {
+          debugPrint(isSaved.toString());
+          if (isSaved) {
+            Navigator.of(context).pop(true);
+          }
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(
-          title: const Text("Create or Update Sale"),
-        ),
-        body: FormBuilder(
+    return MessageListener<SaleState>(
+      child: AppBasePopUpScreen(
+        title: 'Add Sale',
+        floatingButton: _selectedSale.saleStatus == SaleStatus.NEW.name
+            ? Padding(
+                padding: const EdgeInsets.fromLTRB(32.0, 0.0, 0.0, 24.0),
+                child: Stack(
+                  children: <Widget>[
+                    Align(
+                      alignment: Alignment.bottomLeft,
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.black26,
+                        child: const Icon(Icons.save_as_outlined),
+                        onPressed: () {
+                          saveSale(SaleStatus.NEW);
+                        },
+                      ),
+                    ),
+                    Align(
+                      alignment: Alignment.bottomRight,
+                      child: FloatingActionButton(
+                        child: const Icon(Icons.payment),
+                        onPressed: () {
+                          saveSale(SaleStatus.SOLD);
+                        },
+                      ),
+                    )
+                  ],
+                ),
+              )
+            : null,
+        child: FormBuilder(
             key: _formKey,
             initialValue: _selectedSale.toJson(),
             autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -293,35 +331,8 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
                 ))
               ],
             )),
-        floatingActionButtonLocation: FloatingActionButtonLocation.endDocked,
-        floatingActionButton: _selectedSale.saleStatus == SaleStatus.NEW.name
-            ? Padding(
-                padding: const EdgeInsets.fromLTRB(32.0, 0.0, 0.0, 24.0),
-                child: Stack(
-                  children: <Widget>[
-                    Align(
-                      alignment: Alignment.bottomLeft,
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.black26,
-                        child: const Icon(Icons.save_as_outlined),
-                        onPressed: () {
-                          saveSale(SaleStatus.NEW);
-                        },
-                      ),
-                    ),
-                    Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                        child: const Icon(Icons.payment),
-                        onPressed: () {
-                          saveSale(SaleStatus.SOLD);
-                        },
-                      ),
-                    )
-                  ],
-                ),
-              )
-            : null);
+      ),
+    );
   }
 
   Widget packageTitle(Map<String, dynamic> package) =>

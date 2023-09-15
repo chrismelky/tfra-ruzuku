@@ -5,35 +5,33 @@ import 'package:tfra_mobile/app/models/searched_client.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';
 import 'package:tfra_mobile/app/theme/form_controls.dart';
 
-Future<SearchedClient?> searchClientDialog(
-    BuildContext context, String clientType) {
-  String? searchNumber;
-
-  SearchedClient? client;
+Future<String?> otpDialog(BuildContext context, Map<String, dynamic> payload) {
+  String? otp;
   Function showError = appError(context);
-
-  void search() async {
+  String? error;
+  void verifyOtp() async {
+    error = null;
     try {
-      String api = clientType == ClientType.FARMER.name
-          ? "/farmers/by-identification-number/$searchNumber"
-          : '';
-      var response = await Api().dio.get(api);
-      client = clientType == ClientType.FARMER.name
-          ? SearchedClient.formFarmer(response.data["data"])
-          : SearchedClient.fromCooperative(response.data["data"]);
-      debugPrint(client.toString());
+      String api = '/sales/verifyOtp';
+      var data = {'data': payload, 'otp': otp};
+      var response = await Api().dio.post(api, data: data);
+      if (response.statusCode == 200 && context.mounted) {
+        Navigator.pop(context, otp);
+      } else {
+        error = "Invalid Opt";
+      }
     } catch (e) {
       debugPrint(e.toString());
       showError(e.toString());
     }
   }
 
-  return showDialog<SearchedClient?>(
+  return showDialog<String?>(
       context: context,
       builder: (context) {
         return SimpleDialog(
-          title: Text(
-            "Search $clientType",
+          title: const Text(
+            "Please enter the otp sent you number",
             style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
           titlePadding: const EdgeInsets.fromLTRB(16.0, 12.0, 12.0, 0.0),
@@ -49,24 +47,16 @@ Future<SearchedClient?> searchClientDialog(
                           child: SizedBox(
                         height: 48,
                         child: TextField(
-                          decoration: appInputDecoration("Search ID"),
-                          onChanged: (text) => searchNumber = text,
+                          decoration: appInputDecoration("OTP"),
+                          onChanged: (text) => otp = text,
                         ),
                       )),
                       IconButton(
-                          onPressed: (() => search()),
-                          icon: const Icon(Icons.search))
+                          onPressed: (() => verifyOtp()),
+                          icon: const Icon(Icons.send))
                     ],
                   ),
-                  ListTile(
-                      title: client == null
-                          ? const Text("No client selected")
-                          : Text(client!.name!),
-                      onTap: () {
-                        if (client != null) {
-                          Navigator.pop(context, client);
-                        }
-                      })
+                  if (error != null) Text(error!)
                 ],
               ),
             ),

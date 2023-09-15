@@ -4,6 +4,7 @@ import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
+import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
 import 'package:tfra_mobile/app/widgets/app_button.dart';
 import 'package:tfra_mobile/app/widgets/app_fetcher.dart';
@@ -40,7 +41,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBaseScreen(
+    return AppBasePopUpScreen(
         title: 'Add Declaration',
         child: SingleChildScrollView(
             child:

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:tfra_mobile/app/app_routes.dart';
+import 'package:tfra_mobile/app/listeners/message_listener.dart';
 import 'package:tfra_mobile/app/models/sale.dart';
+import 'package:tfra_mobile/app/screens/sales/create_sale_screen.dart';
 import 'package:tfra_mobile/app/shared/shared.dart';
-import 'package:tfra_mobile/app/providers/app_state.dart';
 import 'package:tfra_mobile/app/providers/sale_state.dart';
+import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
 
 class SaleScreen extends StatefulWidget {
   const SaleScreen({super.key});
+
   @override
   State<StatefulWidget> createState() => _SaleScreenState();
 }
@@ -20,39 +24,31 @@ class _SaleScreenState extends State<SaleScreen> {
   void initState() {
     _showError = appError(context);
     _saleState = Provider.of<SaleState>(context, listen: false);
-    _saleState.loadSales(_showError);
+    _saleState.loadSales();
     super.initState();
+  }
+
+  addSale(sale) async {
+    context.read<SaleState>().selectSale(sale);
+    final result = await appRouter.openDialogPage(const CreateSaleScreen());
+    if (result != null && context.mounted) {
+      context.read<SaleState>().loadSales();
+      context.read<SaleState>().selectSale(null);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        drawer: Drawer(
-            child: ListView(children: [
-          DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.green),
-              child: Text("User ${context.select<AppState, String?>(
-                (value) => value.user?.name,
-              )}")),
-          Expanded(child: Container()),
-          TextButton(
-              onPressed: () => context.read<AppState>().logout(),
-              child: const Text("Logout"))
-        ])),
-        appBar: AppBar(
-          title: const Text('Sales'),
-          actions: [
-            IconButton(
-                onPressed: (() {
-                  context.read<SaleState>().selectSale(Sale(
-                      saleStatus: "NEW",
-                      saleTransactionPackages: List.empty()));
-                  context.go('/create-or-update');
-                }),
-                icon: const Icon(Icons.add))
-          ],
-        ),
-        body: Consumer<SaleState>(
+    return AppBaseScreen(
+      title: 'Sales',
+      actions: [
+        IconButton(
+            onPressed: (() => addSale(Sale(
+                saleStatus: "NEW", saleTransactionPackages: List.empty()))),
+            icon: const Icon(Icons.add))
+      ],
+      child: MessageListener<SaleState>(
+        child: Consumer<SaleState>(
           builder: (context, saleState, child) {
             if (saleState.sales == null) {
               return const Text("No sales found");
@@ -66,12 +62,7 @@ class _SaleScreenState extends State<SaleScreen> {
                           title: Text(saleState.sales![index].partyName!),
                           subtitle: Text(
                               "${saleState.sales![index].partyType!}, ${saleState.sales![index].transactionDate!} "),
-                          onTap: () {
-                            context
-                                .read<SaleState>()
-                                .selectSale(saleState.sales![index]);
-                            context.go("/create-or-update");
-                          },
+                          onTap: () => addSale(saleState.sales![index]),
                           leading: CircleAvatar(
                               child: Text(saleState.sales![index].saleStatus
                                   .substring(0, 1))),
@@ -84,6 +75,8 @@ class _SaleScreenState extends State<SaleScreen> {
                   });
             }
           },
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -17,6 +17,8 @@ class StockTransfer {
   final int toPremiseId;
   final String toPremiseName;
   final List<StockTransferItem> stockTransferItems;
+  final String fromPremiseName;
+  final String fromAgroDealerName;
 
   StockTransfer(
       this.id,
@@ -31,7 +33,7 @@ class StockTransfer {
       this.totalBags,
       this.toPremiseId,
       this.toPremiseName,
-      this.stockTransferItems);
+      this.stockTransferItems, this.fromPremiseName, this.fromAgroDealerName);
 
   factory StockTransfer.fromJson(Map<String,dynamic> json)=>_$StockTransferFromJson(json);
   Map<String, dynamic> toJson()=> _$StockTransferToJson(this);

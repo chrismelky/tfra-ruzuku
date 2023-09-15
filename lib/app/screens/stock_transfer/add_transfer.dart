@@ -3,7 +3,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/providers/stock_transfer_provider.dart';
-import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
+import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
 import 'package:tfra_mobile/app/widgets/app_button.dart';
 import 'package:tfra_mobile/app/widgets/app_fetcher.dart';
 import 'package:tfra_mobile/app/widgets/app_form.dart';
@@ -59,7 +59,7 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBaseScreen(
+    return AppBasePopUpScreen(
         title: 'Add Transfer',
         child: SingleChildScrollView(
           child: AppForm(

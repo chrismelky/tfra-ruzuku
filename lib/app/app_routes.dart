@@ -5,7 +5,9 @@ import 'package:tfra_mobile/app/providers/app_state.dart';
 import 'package:tfra_mobile/app/screens/app_notifier.dart';
 import 'package:tfra_mobile/app/screens/declaration/declaration_list.dart';
 import 'package:tfra_mobile/app/screens/login/login.dart';
+import 'package:tfra_mobile/app/screens/receive_stock/receive_stock_list.dart';
 import 'package:tfra_mobile/app/screens/sales/create_sale_screen.dart';
+import 'package:tfra_mobile/app/screens/sales/sale-screen.dart';
 import 'package:tfra_mobile/app/screens/stock_transfer/stock_transfer_list.dart';
 
 class AppRoutes {
@@ -40,26 +42,33 @@ class AppRoutes {
   List<GoRoute> getAppRoutes() {
     return [
       GoRoute(
-          path: '/',
-          builder: (BuildContext context, GoRouterState state) =>
-              const StockDeclarationScreen(),
-          routes: [
-            GoRoute(
-              path: "create-or-update",
-              builder: (context, state) => const CreateSaleScreen(),
-            ),
-          ]),
+        path: '/',
+        builder: (BuildContext context, GoRouterState state) =>
+            const StockDeclarationScreen(),
+      ),
       GoRoute(
         path: login,
         builder: (BuildContext context, GoRouterState state) => const Login(),
       ),
       GoRoute(
         path: declaration,
-        builder: (BuildContext context, GoRouterState state) => const StockDeclarationScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const StockDeclarationScreen(),
       ),
       GoRoute(
         path: transfer,
-        builder: (BuildContext context, GoRouterState state) => const StockTransferListScreen(),
+        builder: (BuildContext context, GoRouterState state) =>
+            const StockTransferListScreen(),
+      ),
+      GoRoute(
+        path: receive,
+        builder: (BuildContext context, GoRouterState state) =>
+            const ReceiveStockListScreen(),
+      ),
+      GoRoute(
+        path: sales,
+        builder: (BuildContext context, GoRouterState state) =>
+            const SaleScreen(),
       ),
     ];
   }

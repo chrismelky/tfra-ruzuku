@@ -23,6 +23,8 @@ StockTransfer _$StockTransferFromJson(Map<String, dynamic> json) =>
       (json['stockTransferItems'] as List<dynamic>)
           .map((e) => StockTransferItem.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['fromPremiseName'] as String,
+      json['fromAgroDealerName'] as String,
     );
 
 Map<String, dynamic> _$StockTransferToJson(StockTransfer instance) =>
@@ -41,4 +43,6 @@ Map<String, dynamic> _$StockTransferToJson(StockTransfer instance) =>
       'toPremiseName': instance.toPremiseName,
       'stockTransferItems':
           instance.stockTransferItems.map((e) => e.toJson()).toList(),
+      'fromPremiseName': instance.fromPremiseName,
+      'fromAgroDealerName': instance.fromAgroDealerName,
     };
