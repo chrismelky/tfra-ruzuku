@@ -10,12 +10,14 @@ class AppFormArrayDisplayColumn {
   final String? parentObjectKey;
   final double? width;
   final FormatType? format;
+  final Widget Function(dynamic value)? displayValueBuilder;
 
   AppFormArrayDisplayColumn(
       {required this.label,
       required this.valueField,
       this.parentObjectKey,
       this.format,
+      this.displayValueBuilder,
       this.width});
 }
 
@@ -96,10 +98,12 @@ class AppInputFormArray<T> extends StatelessWidget {
       var value = col.parentObjectKey != null
           ? u[col.parentObjectKey][col.valueField]
           : u[col.valueField];
-      return Text(
-        value.toString(),
-        style: const TextStyle(fontSize: 14),
-      );
+      return col.displayValueBuilder != null
+          ? col.displayValueBuilder!(value)
+          : Text(
+              value.toString(),
+              style: const TextStyle(fontSize: 14),
+            );
     }
     return Text("");
   }

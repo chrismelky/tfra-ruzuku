@@ -29,27 +29,41 @@ class AppBaseScreen extends StatelessWidget {
           child: ListView(children: [
         DrawerHeader(
             decoration: const BoxDecoration(color: Colors.green),
-            child: Text("User ${context.select<AppState, String?>(
-              (value) => value.user?.name,
-            )}")),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                CircleAvatar(
+                  child: Text("U"),
+                ),
+                SizedBox(width: 10,),
+                Text("${context.select<AppState, String?>(
+                  (value) => value.user?.name,
+                )}")
+              ],
+            )),
         SingleChildScrollView(
             child: Column(children: const [
           AppMenuItem(
-          icon: Icons.launch,
-          label: 'Stock Declaration',
-          route: AppRoutes.declaration),
+              icon: Icons.home,
+              label: 'Home',
+              route: AppRoutes.dashboard),
+              AppMenuItem(
+              icon: Icons.launch,
+              label: 'Stock Declaration',
+              route: AppRoutes.declaration),
           AppMenuItem(
-          icon: Icons.launch,
-          label: 'Stock Transfer',
-          route: AppRoutes.transfer),
+              icon: Icons.launch,
+              label: 'Stock Transfer',
+              route: AppRoutes.transfer),
           AppMenuItem(
-          icon: Icons.launch,
-          label: 'Receive Stock',
-          route: AppRoutes.receive),
+              icon: Icons.launch,
+              label: 'Receive Stock',
+              route: AppRoutes.receive),
           AppMenuItem(
-          icon: Icons.point_of_sale_outlined,
-          label: 'Sales',
-          route: AppRoutes.sales),
+              icon: Icons.point_of_sale_outlined,
+              label: 'Sales',
+              route: AppRoutes.sales),
         ])),
         TextButton(
             onPressed: () => context.read<AppState>().logout(),
@@ -75,7 +89,7 @@ class AppBaseScreen extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
+                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0),
                 child: child,
               ),
             ),

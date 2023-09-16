@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/app_routes.dart';
 import 'package:tfra_mobile/app/screens/splash_screen.dart';
 import 'package:tfra_mobile/app/providers/app_state.dart';
+import 'package:tfra_mobile/app/theme/app_theme.dart';
 
 class App extends StatefulWidget {
   const App({super.key});
@@ -36,9 +37,11 @@ class _AppState extends State<App> {
                     localizationsDelegates: const [
                       FormBuilderLocalizations.delegate,
                     ],
-                    theme: ThemeData(
-                      primarySwatch: Colors.green,
-                    ),
+              theme: defaultTheme,
+
+              // theme: ThemeData(
+              //         primarySwatch: Colors.green,
+              //       ),
                   )
                 : const SplashScreen());
   }

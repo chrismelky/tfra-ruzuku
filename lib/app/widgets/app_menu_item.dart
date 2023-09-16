@@ -18,11 +18,11 @@ class AppMenuItem extends StatelessWidget {
     return ListTile(
       leading: Icon(
         icon,
-        color: Theme.of(context).primaryColorDark,
+        color: Theme.of(context).primaryColor,
       ),
       title: Text(
         label,
-        style: TextStyle(color: Theme.of(context).primaryColorDark),
+        style: TextStyle(color: Theme.of(context).primaryColor),
       ),
       onTap: () {
          context.go(route);

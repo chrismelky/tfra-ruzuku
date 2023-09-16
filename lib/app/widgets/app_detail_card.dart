@@ -7,12 +7,14 @@ class AppDetailColumn {
   final dynamic value;
   final FormatType? format;
   final Widget? widget;
+  final Widget Function(Map<String, dynamic> row)? builder;
 
-  AppDetailColumn({
+  AppDetailColumn( {
     required this.header,
     required this.value,
     this.format,
     this.widget,
+    this.builder,
   });
 }
 

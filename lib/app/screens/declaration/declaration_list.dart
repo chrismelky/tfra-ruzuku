@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/app_routes.dart';
 import 'package:tfra_mobile/app/listeners/message_listener.dart';
@@ -47,14 +46,32 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                     return AppDetailCard(
                         title: declaration.declarationType,
                         data: declaration.toJson(),
-                        actionBuilder: (item)=>Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            IconButton(onPressed: () {}, icon: Icon(Icons.launch)),
-                            SizedBox(width: 4,),
-                            IconButton(onPressed: () {}, icon: Icon(Icons.edit))
-                          ],
-                        ),
+                        actionBuilder: (item) => Row(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Icon(
+                                  Icons.verified,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                const SizedBox(
+                                  width: 8,
+                                ),
+                                Icon(
+                                  Icons.qr_code,
+                                  color: Theme.of(context).primaryColor,
+                                ),
+                                Expanded(child: Container()),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.launch)),
+                                const SizedBox(
+                                  width: 4,
+                                ),
+                                IconButton(
+                                    onPressed: () {},
+                                    icon: const Icon(Icons.edit))
+                              ],
+                            ),
                         columns: [
                           AppDetailColumn(
                               header: 'Product',
@@ -62,17 +79,12 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                           AppDetailColumn(
                               header: 'Quantity', value: declaration.quantity),
                           AppDetailColumn(
-                              header: 'Approved',
-                              widget: declaration.approved
-                                  ? Icon(Icons.verified, color: Theme.of(context).primaryColor,)
-                                  : Icon(Icons.not_interested),
-                              value: declaration.approved),
+                              header: 'Premise',
+                              value: declaration.declarationPremises.length),
                           AppDetailColumn(
-                              header: 'QR generated',
-                              widget: declaration.approved
-                                  ? Icon(Icons.qr_code, color: Theme.of(context).primaryColor,)
-                                  : Icon(Icons.not_interested),
-                              value: declaration.qrCodesGenerated)
+                              header: 'Packaging',
+                              value: declaration.declarationPremises.length),
+
                         ]);
                   }
                   return Row(
