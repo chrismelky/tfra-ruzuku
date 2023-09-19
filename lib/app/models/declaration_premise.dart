@@ -11,12 +11,14 @@ class DeclarationPremise {
   final String uuid;
   final double quantity;
   final String? premiseName;
+  final int? premiseId;
   final List<PackagingOption> packagingRequests;
 
-  DeclarationPremise(this.id, this.uuid, this.quantity, this.premiseName, this.packagingRequests);
+  DeclarationPremise(this.id, this.uuid, this.quantity, this.premiseName,
+      this.packagingRequests, this.premiseId);
 
-  factory DeclarationPremise.fromJson(Map<String,dynamic> json)=>_$DeclarationPremiseFromJson(json);
+  factory DeclarationPremise.fromJson(Map<String, dynamic> json) =>
+      _$DeclarationPremiseFromJson(json);
 
-  Map<String, dynamic> toJson()=> _$DeclarationPremiseToJson(this);
-
+  Map<String, dynamic> toJson() => _$DeclarationPremiseToJson(this);
 }

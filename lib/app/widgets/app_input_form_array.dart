@@ -33,6 +33,8 @@ class AppInputFormArray<T> extends StatelessWidget {
 
   final _editForm = GlobalKey<FormBuilderState>();
 
+  final initialValue;
+
   _onSave(Map<String, dynamic> item, int? rowIndex) {
     List<Map<String, dynamic>> items =
         List.from(formKey.currentState!.fields[name]!.value!);
@@ -69,26 +71,26 @@ class AppInputFormArray<T> extends StatelessWidget {
     });
   }
 
-  AppInputFormArray({
-    super.key,
-    required this.name,
-    required this.label,
-    this.validators = const [],
-    required this.formKey,
-    required this.formControls,
-    required this.displayColumns,
-    required this.uniqueKeyField,
-    this.parentUniqueKeyField,
-  });
+  AppInputFormArray(
+      {super.key,
+      required this.name,
+      required this.label,
+      this.validators = const [],
+      required this.formKey,
+      required this.formControls,
+      required this.displayColumns,
+      required this.uniqueKeyField,
+      this.parentUniqueKeyField,
+      this.initialValue});
 
   @override
   Widget build(BuildContext context) {
     return FormBuilderField<List<Map<String, dynamic>>>(
         name: name,
-        initialValue: const [],
+        initialValue: initialValue,
         validator: FormBuilderValidators.compose(validators),
         builder: (field) {
-          return _formArrayTable(context, field.value!);
+          return _formArrayTable(context, field?.value ?? []);
         });
   }
 

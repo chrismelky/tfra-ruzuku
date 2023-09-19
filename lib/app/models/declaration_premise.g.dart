@@ -15,6 +15,7 @@ DeclarationPremise _$DeclarationPremiseFromJson(Map<String, dynamic> json) =>
       (json['packagingRequests'] as List<dynamic>)
           .map((e) => PackagingOption.fromJson(e as Map<String, dynamic>))
           .toList(),
+      json['premiseId'] as int?,
     );
 
 Map<String, dynamic> _$DeclarationPremiseToJson(DeclarationPremise instance) =>
@@ -23,6 +24,7 @@ Map<String, dynamic> _$DeclarationPremiseToJson(DeclarationPremise instance) =>
       'uuid': instance.uuid,
       'quantity': instance.quantity,
       'premiseName': instance.premiseName,
+      'premiseId': instance.premiseId,
       'packagingRequests':
           instance.packagingRequests.map((e) => e.toJson()).toList(),
     };

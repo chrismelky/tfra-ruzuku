@@ -8,7 +8,6 @@ import 'package:tfra_mobile/app/listeners/message_listener.dart';
 import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
 import 'package:tfra_mobile/app/screens/declaration/add_packaging.dart';
 import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_button.dart';
 import 'package:tfra_mobile/app/widgets/app_fetcher.dart';
 import 'package:tfra_mobile/app/widgets/app_form.dart';
 import 'package:tfra_mobile/app/widgets/app_input_dropdown.dart';
@@ -16,7 +15,10 @@ import 'package:tfra_mobile/app/widgets/app_input_form_array.dart';
 import 'package:tfra_mobile/app/widgets/app_input_number.dart';
 
 class AddStockDeclarationScreen extends StatefulWidget {
-  const AddStockDeclarationScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic>? formValues;
+
+  const AddStockDeclarationScreen({Key? key, this.formValues})
+      : super(key: key);
 
   @override
   State<AddStockDeclarationScreen> createState() =>
@@ -29,7 +31,8 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
   bool _productFormError = false;
   bool _premiseFormError = false;
   bool _totalPremiseError = false;
-  Map<String, dynamic> _declaration = {'declarationPremises': []};
+  late Map<String, dynamic> _declaration;
+  late Map<String, dynamic> _declarationPremises;
 
   final List<Map<String, dynamic>> _stockTypes = [
     {'id': 'IMPORTATION', 'name': 'IMPORTATION'},
@@ -40,6 +43,10 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
 
   @override
   void initState() {
+    _declarationPremises = {
+      'declarationPremises': widget.formValues?['declarationPremises'] ?? []
+    };
+    _declaration = widget.formValues ?? {};
     context.read<StockDeclarationProvider>().fetchPremises();
     super.initState();
   }
@@ -67,6 +74,8 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
         } else {
           setState(() => {_premiseFormError = true});
         }
+        _premiseForm.currentState?.saveAndValidate();
+        debugPrint(_premiseForm.currentState?.value.toString());
         break;
       case 1:
         /*If premise form is valid check quantity of the product form equals to sum of premise quantity
@@ -115,6 +124,11 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                 elevation: 2,
                 margin: const EdgeInsets.fromLTRB(52, 4, 16, 2),
                 onStepContinue: () => _onStepContinue(),
+                onStepCancel: () {
+                  if (_activeStep > 0) {
+                    setState(() => {_activeStep -= 1});
+                  }
+                },
                 controlsBuilder: (context, details) {
                   return Row(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -167,7 +181,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                       title: Text('Premises'),
                       content: AppForm(
                         formKey: _premiseForm,
-                        initialValue: _declaration,
+                        initialValue: _declarationPremises,
                         controls: [
                           AppInputFormArray(
                             formKey: _premiseForm,
@@ -184,7 +198,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                                   valueField: 'premiseId',
                                   displayValueBuilder: (premiseId) => Text(
                                       provider.premises.firstWhere((e) =>
-                                              e['id'] == premiseId)['name'] ??
+                                              e['id'] == premiseId, orElse: () =>{})['name'] ??
                                           ''),
                                   width: 170.0),
                               AppFormArrayDisplayColumn(
@@ -231,7 +245,9 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
           _premiseForm.currentState!.value['declarationPremises']
     };
     try {
-      var resp = await Api().dio.post('/subsidy-declarations', data: payload);
+      var resp = await (payload['id'] != null ?
+      Api().dio.put('/subsidy-declarations/${payload['id']}', data: payload):
+      Api().dio.post('/subsidy-declarations', data: payload));
       if (mounted && [200, 201].contains(resp.statusCode)) {
         return resp.data['data'] as Map<String, dynamic>;
       }

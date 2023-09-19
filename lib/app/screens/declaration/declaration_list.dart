@@ -21,9 +21,10 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
     context.read<StockDeclarationProvider>().init();
   }
 
-  _addDeclaration() async {
-    final result =
-        await appRouter.openDialogPage(const AddStockDeclarationScreen());
+  _addDeclaration(Map<String, dynamic>? data) async {
+    final result = await appRouter.openDialogPage(AddStockDeclarationScreen(
+      formValues: data,
+    ));
     if (result != null && context.mounted) {
       context.read<StockDeclarationProvider>().init();
     }
@@ -36,7 +37,8 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
         title: "Stock Declaration",
         actions: [
           IconButton(
-              onPressed: () => _addDeclaration(), icon: const Icon(Icons.add))
+              onPressed: () => _addDeclaration(null),
+              icon: const Icon(Icons.add))
         ],
         child: Consumer<StockDeclarationProvider>(
             builder: (_, provider, child) => ListView.separated(
@@ -68,7 +70,7 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                                   width: 4,
                                 ),
                                 IconButton(
-                                    onPressed: () {},
+                                    onPressed: () => _addDeclaration(item),
                                     icon: const Icon(Icons.edit))
                               ],
                             ),
@@ -84,7 +86,6 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                           AppDetailColumn(
                               header: 'Packaging',
                               value: declaration.declarationPremises.length),
-
                         ]);
                   }
                   return Row(
