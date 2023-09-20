@@ -13,7 +13,9 @@ import 'package:tfra_mobile/app/widgets/app_input_hidden.dart';
 import 'package:tfra_mobile/app/widgets/app_input_number.dart';
 
 class AddStockTransferScreen extends StatefulWidget {
-  const AddStockTransferScreen({Key? key}) : super(key: key);
+  final Map<String, dynamic>? formValues;
+
+  const AddStockTransferScreen({Key? key, this.formValues}) : super(key: key);
 
   @override
   State<AddStockTransferScreen> createState() => _AddStockTransferScreenState();
@@ -29,8 +31,16 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
   @override
   void initState() {
     loadStockCards();
-    List<Map<String, dynamic>> init = [];
-    _transferFormInitValues = {'stockTransferItems': init};
+    if (widget.formValues != null) {
+      selectedType = widget.formValues!['transactionType'];
+      _transferFormInitValues = {
+        ...widget.formValues!,
+        'transferType': selectedType
+      };
+    } else {
+      List<Map<String, dynamic>> stockTransferItems = [];
+      _transferFormInitValues = {'stockTransferItems': stockTransferItems};
+    }
     super.initState();
   }
 
@@ -119,7 +129,7 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
                       ),
                       const AppInputNumber(name: 'quantity', label: 'Quantity'),
                       const AppInputNumber(
-                          name: 'unitPricePaid', label: 'Price Pain')
+                          name: 'unitPricePaid', label: 'Price Pain'),
                     ],
                     displayColumns: [
                       AppFormArrayDisplayColumn(
@@ -160,7 +170,9 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
       };
       debugPrint(payload.toString());
       try {
-        var resp = await Api().dio.post('/stock-transfers', data: payload);
+        var resp = await (payload['id'] != null
+            ? Api().dio.put('/stock-transfers/${payload['uuid']}', data: payload)
+            : Api().dio.post('/stock-transfers', data: payload));
         if (mounted && [200, 201].contains(resp.statusCode)) {
           Navigator.of(context).pop(true);
         }

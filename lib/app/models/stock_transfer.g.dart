@@ -14,12 +14,12 @@ StockTransfer _$StockTransferFromJson(Map<String, dynamic> json) =>
       json['financialYearId'] as int,
       json['financialYearName'] as String,
       json['transactionStatus'] as String,
-      json['toAgroDealerId'] as int,
-      json['toAgroDealerName'] as String,
+      json['toAgroDealerId'] as int?,
+      json['toAgroDealerName'] as String?,
       (json['totalQuantity'] as num).toDouble(),
       json['totalBags'] as int,
-      json['toPremiseId'] as int,
-      json['toPremiseName'] as String,
+      json['toPremiseId'] as int?,
+      json['toPremiseName'] as String?,
       (json['stockTransferItems'] as List<dynamic>)
           .map((e) => StockTransferItem.fromJson(e as Map<String, dynamic>))
           .toList(),

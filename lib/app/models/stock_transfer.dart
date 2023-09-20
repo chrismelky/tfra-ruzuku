@@ -11,12 +11,12 @@ class StockTransfer {
   final int financialYearId;
   final String financialYearName;
   final String transactionStatus;
-  final int toAgroDealerId;
-  final String toAgroDealerName;
+  final int? toAgroDealerId;
+  final String? toAgroDealerName;
   final double totalQuantity;
   final int totalBags;
-  final int toPremiseId;
-  final String toPremiseName;
+  final int? toPremiseId;
+  final String? toPremiseName;
   final List<StockTransferItem> stockTransferItems;
   final String? fromPremiseName;
   final String? fromAgroDealerName;

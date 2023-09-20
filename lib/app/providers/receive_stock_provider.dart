@@ -31,17 +31,17 @@ class ReceiveStockProvider extends BaseProvider{
   List<StockTransfer> get stockToReceive => _stockToReceive;
 
   fetchTransfers() async {
-    isLoading = true;
-    try {
+  //  isLoading = true;
+  //  try {
       var resp = await Api().dio.get('$api/on-transit?page=$_page');
       stockToReceive = (resp.data['data'] as List<dynamic>)
           .map((e) => StockTransfer.fromJson(e))
           .toList();
-    } catch (e) {
-      notifyError(e.toString());
-    } finally {
-      isLoading = false;
-    }
+    // } catch (e) {
+    //   notifyError(e.toString());
+    // } finally {
+    //   isLoading = false;
+    // }
   }
 
 }
