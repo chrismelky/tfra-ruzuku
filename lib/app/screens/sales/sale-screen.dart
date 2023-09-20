@@ -52,8 +52,8 @@ class _SaleScreenState extends State<SaleScreen> {
       child: MessageListener<SaleState>(
         child: Consumer<SaleState>(
           builder: (context, saleState, child) {
-            if (saleState.sales == null) {
-              return const Text("No sales found");
+            if (saleState.sales.isEmpty) {
+              return const Center( child: Text("No sales found"),);
             } else {
               return ListView.separated(
                   itemBuilder: (_, idx) {

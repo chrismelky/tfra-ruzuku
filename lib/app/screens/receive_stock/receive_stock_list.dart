@@ -20,7 +20,8 @@ class _ReceiveStockListScreenState extends State<ReceiveStockListScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<ReceiveStockProvider>().init();
+    Future.delayed(
+        Duration.zero, () => context.read<ReceiveStockProvider>().init());
   }
 
   _receiveStock(StockTransfer stock) async {

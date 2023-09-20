@@ -18,7 +18,8 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
   @override
   void initState() {
     super.initState();
-    context.read<StockDeclarationProvider>().init();
+    Future.delayed(
+        Duration.zero, () => context.read<StockDeclarationProvider>().init());
   }
 
   _addDeclaration(Map<String, dynamic>? data) async {
@@ -93,9 +94,13 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                     children: [
                       provider.isLoading
                           ? const CircularProgressIndicator()
-                          : TextButton(
-                              onPressed: () => provider.loadMore(),
-                              child: const Text("Load more.."))
+                          : provider.declarations.isEmpty
+                              ? const Center(
+                                  child: Text('No declaration found'),
+                                )
+                              : TextButton(
+                                  onPressed: () => provider.loadMore(),
+                                  child: const Text("Load more.."))
                     ],
                   );
                 },

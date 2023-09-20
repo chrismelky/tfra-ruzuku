@@ -134,7 +134,7 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
                     Align(
                       alignment: Alignment.bottomLeft,
                       child: FloatingActionButton(
-                        backgroundColor: Colors.black26,
+                        heroTag: "btn1",
                         child: const Icon(Icons.save_as_outlined),
                         onPressed: () {
                           saveSale(SaleStatus.NEW);
@@ -144,6 +144,7 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
                     Align(
                       alignment: Alignment.bottomRight,
                       child: FloatingActionButton(
+                        heroTag: "btn2",
                         child: const Icon(Icons.payment),
                         onPressed: () {
                           saveSale(SaleStatus.SOLD);
@@ -162,39 +163,36 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
               children: [
                 Padding(
                   padding: const EdgeInsets.fromLTRB(1.0, 8.0, 0.0, 8.0),
-                  child: Row(
+                  child: Column(
                     children: [
-                      Expanded(
-                          child: FormBuilderDateTimePicker(
+                      FormBuilderDateTimePicker(
                         name: "transactionDate",
                         style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black,
+                      fontSize: 14,
+                      color: Colors.black,
                         ),
                         validator: FormBuilderValidators.required(
-                            errorText: "Select transaction date"),
+                        errorText: "Select transaction date"),
                         decoration: saleDatePickerDecoration("Select Date"),
                         inputType: InputType.date,
-                      )),
-                      const SizedBox(
-                        width: 8,
                       ),
-                      Expanded(
-                        child: FormBuilderDropdown<String>(
-                          name: 'partyType',
-                          style: const TextStyle(
-                              fontSize: 13, color: Colors.black),
-                          decoration:
-                              saleDropdownDecoration("Select Client Type"),
-                          validator: FormBuilderValidators.required(
-                              errorText: "Select client type"),
-                          items: ClientType.values
-                              .map((type) => DropdownMenuItem(
-                                    value: type.name,
-                                    child: Text(type.name),
-                                  ))
-                              .toList(growable: false),
-                        ),
+                      const SizedBox(
+                        height: 8,
+                      ),
+                      FormBuilderDropdown<String>(
+                        name: 'partyType',
+                        style: const TextStyle(
+                            fontSize: 13, color: Colors.black),
+                        decoration:
+                            saleDropdownDecoration("Select Client Type"),
+                        validator: FormBuilderValidators.required(
+                            errorText: "Select client type"),
+                        items: ClientType.values
+                            .map((type) => DropdownMenuItem(
+                                  value: type.name,
+                                  child: Text(type.name),
+                                ))
+                            .toList(growable: false),
                       ),
                     ],
                   ),

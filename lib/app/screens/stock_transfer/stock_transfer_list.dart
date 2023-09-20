@@ -6,7 +6,6 @@ import 'package:tfra_mobile/app/providers/stock_transfer_provider.dart';
 import 'package:tfra_mobile/app/screens/stock_transfer/add_transfer.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
 import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
-import 'package:tfra_mobile/app/widgets/app_table.dart';
 
 class StockTransferListScreen extends StatefulWidget {
   const StockTransferListScreen({Key? key}) : super(key: key);
@@ -17,11 +16,10 @@ class StockTransferListScreen extends StatefulWidget {
 }
 
 class _StockTransferListScreenState extends State<StockTransferListScreen> {
-
   @override
   void initState() {
     super.initState();
-    context.read<StockTransferProvider>().init();
+    Future.delayed(Duration.zero, ()=>context.read<StockTransferProvider>().init());
   }
 
   @override
@@ -30,9 +28,7 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
         child: AppBaseScreen(
       title: 'Stock Transfers',
       actions: [
-        IconButton(
-            onPressed: () => _addTransfer(),
-            icon: const Icon(Icons.add))
+        IconButton(onPressed: () => _addTransfer(), icon: const Icon(Icons.add))
       ],
       child: Consumer<StockTransferProvider>(
           builder: (_, provider, child) => ListView.separated(
@@ -44,11 +40,14 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                       data: transfer.toJson(),
                       columns: [
                         AppDetailColumn(
-                            header: 'To Agro Dealer', value: transfer.toAgroDealerName),
+                            header: 'To Agro Dealer',
+                            value: transfer.toAgroDealerName),
                         AppDetailColumn(
-                            header: 'To Premise', value: transfer.toPremiseName),
+                            header: 'To Premise',
+                            value: transfer.toPremiseName),
                         AppDetailColumn(
-                            header: 'Total Quantity', value: transfer.totalQuantity),
+                            header: 'Total Quantity',
+                            value: transfer.totalQuantity),
                         AppDetailColumn(
                             header: 'Bags', value: transfer.totalBags)
                       ]);
@@ -58,19 +57,24 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                   children: [
                     provider.isLoading
                         ? const CircularProgressIndicator()
-                        : TextButton(
-                        onPressed: () => provider.loadMore(),
-                        child: const Text("Load more.."))
+                        : provider.stockTransfers.isEmpty
+                            ? const Center(
+                                child: Text('No transfer found'),
+                              )
+                            : TextButton(
+                                onPressed: () => provider.loadMore(),
+                                child: const Text("Load more.."))
                   ],
                 );
               },
               separatorBuilder: (context, idx) => const Divider(),
-              itemCount: provider.stockTransfers.length+1)),
+              itemCount: provider.stockTransfers.length + 1)),
     ));
   }
 
-  _addTransfer() async{
-    final result = await appRouter.openDialogPage(const AddStockTransferScreen());
+  _addTransfer() async {
+    final result =
+        await appRouter.openDialogPage(const AddStockTransferScreen());
     if (result != null && context.mounted) {
       context.read<StockTransferProvider>().init();
     }
