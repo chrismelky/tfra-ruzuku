@@ -10,12 +10,14 @@ class AppInputDropDown<T extends dynamic> extends StatelessWidget {
   final List<String? Function(dynamic)> validators;
   final Function? onChange;
   final bool isLoading;
+  final String valueColumn;
 
   const AppInputDropDown(
       {super.key,
       required this.items,
       required this.name,
       this.displayValue = 'name',
+        this.valueColumn ='id',
       required this.label,
         this.isLoading = false,
       this.validators = const [],
@@ -36,7 +38,7 @@ class AppInputDropDown<T extends dynamic> extends StatelessWidget {
                 ),
             items: items.map((dynamic value) {
               return DropdownMenuItem<T>(
-                value: value['id'],
+                value: value[valueColumn],
                 child: Text(value[displayValue],
                     style: const TextStyle(fontSize: 14)),
               );

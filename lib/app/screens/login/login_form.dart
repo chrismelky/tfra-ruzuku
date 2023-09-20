@@ -39,12 +39,15 @@ class _LoginFormState extends State<LoginForm> {
           Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: const [
+            children:  [
               CircleAvatar(
-                child: Text("FIS"),
+                radius: 48,
+                backgroundColor: Theme.of(context).primaryColor,
+                child: Text("SSMS"),
               ),
               SizedBox(height: 18),
-              Text("Login")
+              Text("Login"),
+              SizedBox(height: 18),
             ],
           ),
           FormBuilderTextField(
@@ -55,7 +58,7 @@ class _LoginFormState extends State<LoginForm> {
                 FormBuilderValidators.email(
                     errorText: "Please enter valid email")
               ])),
-          const SizedBox(height: 2),
+          const SizedBox(height: 18),
           FormBuilderTextField(
             name: 'password',
             decoration: appInputDecoration("Password"),

@@ -12,7 +12,7 @@ class StockTransferItem {
   final String packagingOptionName;
   final int bags;
   final double quantity;
-  final double availableQuantity;
+  final double availableQty;
   final String stockCardUuid;
 
   StockTransferItem(
@@ -24,7 +24,7 @@ class StockTransferItem {
       this.packagingOptionName,
       this.bags,
       this.quantity,
-      this.availableQuantity,
+      this.availableQty,
       this.stockCardUuid);
 
   factory StockTransferItem.fromJson(Map<String,dynamic> json)=>_$StockTransferItemFromJson(json);

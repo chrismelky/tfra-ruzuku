@@ -23,13 +23,15 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
   final _transferForm = GlobalKey<FormBuilderState>();
   String? selectedType;
   List<Map<String, dynamic>> premises = List.empty(growable: true);
-
   List<Map<String, dynamic>> stockCards = List.empty(growable: true);
+  late Map<String, dynamic> _transferFormInitValues;
 
   @override
   void initState() {
-    super.initState();
     loadStockCards();
+    List<Map<String, dynamic>> init = [];
+    _transferFormInitValues = {'stockTransferItems': init};
+    super.initState();
   }
 
   loadStockCards() async {
@@ -62,55 +64,78 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
     return AppBasePopUpScreen(
         title: 'Add Transfer',
         child: SingleChildScrollView(
-          child: AppForm(
-            formKey: _transferForm,
-            initialValue: {},
-            controls: [
-              AppInputDropDown(
-                items: _transferTypes,
-                name: 'transferType',
-                label: 'Transfer Type',
-                onChange: (value) => setState(() => selectedType = value),
+          child: Column(
+            children: [
+              AppForm(
+                formKey: _transferForm,
+                initialValue: _transferFormInitValues,
+                controls: [
+                  AppInputDropDown(
+                    items: _transferTypes,
+                    name: 'transferType',
+                    label: 'Transfer Type',
+                    onChange: (value) => setState(() => selectedType = value),
+                  ),
+                  Builder(builder: (_) {
+                    if (selectedType == 'DEALER_TRANSFER') {
+                      return AppFetcher(
+                          api: '/agro-dealers/mapped-dealers',
+                          builder: (items, isLoading) => AppInputDropDown(
+                              items: items,
+                              name: 'toAgroDealerId',
+                              label: 'To AgroDealer'));
+                    }
+                    return const AppInputHidden(
+                      fieldName: '_',
+                      value: 0,
+                    );
+                  }),
+                  if (selectedType != null)
+                    Builder(builder: (_) {
+                      if (selectedType == 'DEALER_TRANSFER') {
+                        return AppInputDropDown(
+                            items: premises,
+                            name: 'toPremiseId',
+                            label: 'Premise');
+                      }
+                      return AppFetcher(
+                          api: '/premises',
+                          builder: (items, isLoading) => AppInputDropDown(
+                              items: items,
+                              name: 'toPremiseId',
+                              label: 'Premise'));
+                    }),
+                  AppInputFormArray(
+                    name: 'stockTransferItems',
+                    label: 'Stock Items',
+                    uniqueKeyField: 'stockCardUuid',
+                    formKey: _transferForm,
+                    formControls: [
+                      AppInputDropDown(
+                        items: stockCards,
+                        name: 'stockCardUuid',
+                        valueColumn: 'uuid',
+                        label: 'Stock Item',
+                      ),
+                      const AppInputNumber(name: 'quantity', label: 'Quantity'),
+                      const AppInputNumber(
+                          name: 'unitPricePaid', label: 'Price Pain')
+                    ],
+                    displayColumns: [
+                      AppFormArrayDisplayColumn(
+                          label: 'Item',
+                          valueField: 'stockCardUuid',
+                          displayValueBuilder: (stockCardUuid) => Text(
+                              stockCards.firstWhere(
+                                  (e) => e['uuid'] == stockCardUuid,
+                                  orElse: () => {})['name'])),
+                      AppFormArrayDisplayColumn(
+                          label: 'Quantity', valueField: 'quantity'),
+                    ],
+                  ),
+                  AppButton(onPress: () => _save(), label: "Submit")
+                ],
               ),
-              Builder(builder: (_) {
-                if (selectedType == 'DEALER_TRANSFER') {
-                  return AppFetcher(
-                      api: '/agro-dealers/mapped-dealers',
-                      builder: (items, isLoading) => AppInputDropDown(
-                          items: items,
-                          name: 'toAgroDealerId',
-                          label: 'To AgroDealer'));
-                }
-                return const AppInputHidden(fieldName: '_', value: 0,);
-              }),
-              if (selectedType != null)
-                Builder(builder: (_) {
-                  if (selectedType == 'DEALER_TRANSFER') {
-                    return AppInputDropDown(
-                        items: premises, name: 'toPremiseId', label: 'Premise');
-                  }
-                  return AppFetcher(
-                      api: '/premises',
-                      builder: (items, isLoading) => AppInputDropDown(
-                          items: items, name: 'toPremiseId', label: 'Premise'));
-                }),
-              AppInputFormArray(
-                  name: 'stockTransferItems',
-                  label: 'Stock Items',
-                  formKey: _transferForm,
-                  formControls: [
-                    AppInputDropDown(
-                        items: stockCards, name: 'stockCardId', label: 'Item'),
-                    AppInputNumber(name: 'quantity', label: 'Quantity')
-                  ],
-                  displayColumns: [
-                    AppFormArrayDisplayColumn(
-                        label: 'Item', valueField: 'stockCard'),
-                    AppFormArrayDisplayColumn(
-                        label: 'Quantity', valueField: 'quantity')
-                  ],
-                  uniqueKeyField: 'stockCardId'),
-              AppButton(onPress: () => _save(), label: "Submit")
             ],
           ),
         ));
@@ -118,7 +143,21 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
 
   _save() async {
     if (_transferForm.currentState?.saveAndValidate() == true) {
-      var payload = _transferForm.currentState!.value;
+      var formData = _transferForm.currentState!.value;
+      debugPrint(formData.toString());
+      var payload = {
+        ...formData,
+        'stockTransferItems': formData['stockTransferItems'].map((i) {
+          var stockCard = stockCards.firstWhere(
+              (e) => e['uuid'] == i['stockCardUuid'],
+              orElse: () => {});
+          return {
+            ...i,
+            'productId': stockCard['productId'],
+            'packagingOptionId': stockCard['packagingOptionId'],
+          };
+        }).toList()
+      };
       debugPrint(payload.toString());
       try {
         var resp = await Api().dio.post('/stock-transfers', data: payload);

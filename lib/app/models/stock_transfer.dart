@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'package:tfra_mobile/app/models/stock_transfer_item.dart';
 
 part 'stock_transfer.g.dart';
+
 @JsonSerializable(explicitToJson: true)
 class StockTransfer {
   final int id;
@@ -17,8 +18,8 @@ class StockTransfer {
   final int toPremiseId;
   final String toPremiseName;
   final List<StockTransferItem> stockTransferItems;
-  final String fromPremiseName;
-  final String fromAgroDealerName;
+  final String? fromPremiseName;
+  final String? fromAgroDealerName;
 
   StockTransfer(
       this.id,
@@ -33,8 +34,12 @@ class StockTransfer {
       this.totalBags,
       this.toPremiseId,
       this.toPremiseName,
-      this.stockTransferItems, this.fromPremiseName, this.fromAgroDealerName);
+      this.stockTransferItems,
+      this.fromPremiseName,
+      this.fromAgroDealerName);
 
-  factory StockTransfer.fromJson(Map<String,dynamic> json)=>_$StockTransferFromJson(json);
-  Map<String, dynamic> toJson()=> _$StockTransferToJson(this);
+  factory StockTransfer.fromJson(Map<String, dynamic> json) =>
+      _$StockTransferFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StockTransferToJson(this);
 }

@@ -16,7 +16,7 @@ StockTransferItem _$StockTransferItemFromJson(Map<String, dynamic> json) =>
       json['packagingOptionName'] as String,
       json['bags'] as int,
       (json['quantity'] as num).toDouble(),
-      (json['availableQuantity'] as num).toDouble(),
+      (json['availableQty'] as num).toDouble(),
       json['stockCardUuid'] as String,
     );
 
@@ -30,6 +30,6 @@ Map<String, dynamic> _$StockTransferItemToJson(StockTransferItem instance) =>
       'packagingOptionName': instance.packagingOptionName,
       'bags': instance.bags,
       'quantity': instance.quantity,
-      'availableQuantity': instance.availableQuantity,
+      'availableQty': instance.availableQty,
       'stockCardUuid': instance.stockCardUuid,
     };

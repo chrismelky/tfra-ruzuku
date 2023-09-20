@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/models/stock_transfer.dart';
 import 'package:tfra_mobile/app/providers/base_provider.dart';
@@ -18,12 +19,12 @@ class StockTransferProvider extends BaseProvider {
       _stockTransfers.addAll(value);
       notifyListeners();
     } else {
-      _page = _page > 0 ? _page-- : 0;
+      _page = _page > 0 ? _page- 1 : 0;
     }
   }
 
   Future<void> loadMore() async {
-    _page++;
+    _page = _page +1;
     fetchTransfers();
   }
 
@@ -37,6 +38,7 @@ class StockTransferProvider extends BaseProvider {
           .map((e) => StockTransfer.fromJson(e))
           .toList();
     } catch (e) {
+      debugPrint(e.toString());
       notifyError(e.toString());
     } finally {
       isLoading = false;

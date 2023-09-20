@@ -33,11 +33,11 @@ class AppInputFormArray<T> extends StatelessWidget {
 
   final _editForm = GlobalKey<FormBuilderState>();
 
-  final initialValue;
 
+  //Add to form array after pop up form have saved
   _onSave(Map<String, dynamic> item, int? rowIndex) {
     List<Map<String, dynamic>> items =
-        List.from(formKey.currentState!.fields[name]!.value!);
+        List.from(formKey.currentState!.fields[name]!.value);
 
     final int idx = _getIndex(items, item);
     if (idx == -1) {
@@ -80,14 +80,12 @@ class AppInputFormArray<T> extends StatelessWidget {
       required this.formControls,
       required this.displayColumns,
       required this.uniqueKeyField,
-      this.parentUniqueKeyField,
-      this.initialValue});
+      this.parentUniqueKeyField});
 
   @override
   Widget build(BuildContext context) {
     return FormBuilderField<List<Map<String, dynamic>>>(
         name: name,
-        initialValue: initialValue,
         validator: FormBuilderValidators.compose(validators),
         builder: (field) {
           return _formArrayTable(context, field?.value ?? []);
