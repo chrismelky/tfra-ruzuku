@@ -25,8 +25,8 @@ class _ReceiveStockListScreenState extends State<ReceiveStockListScreen> {
   }
 
   _receiveStock(StockTransfer stock) async {
-    final result =
-        await appRouter.openDialogPage(ReceiveStockDetailScreen(stock: stock));
+    final result = await appRouter
+        .openDialogPage(ReceiveStockDetailScreen(stockTransfer: stock));
     if (result != null && context.mounted) {
       context.read<ReceiveStockProvider>().init();
     }
@@ -64,9 +64,13 @@ class _ReceiveStockListScreenState extends State<ReceiveStockListScreen> {
                   children: [
                     provider.isLoading
                         ? const CircularProgressIndicator()
-                        : TextButton(
-                            onPressed: () => provider.loadMore(),
-                            child: const Text("Load more.."))
+                        : provider.stockToReceive.isEmpty
+                            ? const Center(
+                                child: Text('No transfer found'),
+                              )
+                            : TextButton(
+                                onPressed: () => provider.loadMore(),
+                                child: const Text("Load more.."))
                   ],
                 );
               },

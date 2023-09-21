@@ -3,10 +3,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tfra_mobile/app/api/api.dart';
+import 'package:tfra_mobile/app/mixin/message_notifier_mixin.dart';
 import 'package:tfra_mobile/app/models/user.dart';
 import 'package:tfra_mobile/app/utils/app_const.dart';
 
-class AppState with ChangeNotifier {
+class AppState with ChangeNotifier, MessageNotifierMixin {
   bool isAuthenticated = false;
   bool sessionHasBeenFetched = false;
   bool isLoading = false;
@@ -25,6 +26,7 @@ class AppState with ChangeNotifier {
       sessionHasBeenFetched = true;
       notifyListeners();
     } catch (e) {
+      notifyError(e.toString());
       debugPrint(e.toString());
     }
   }
@@ -34,7 +36,7 @@ class AppState with ChangeNotifier {
     notifyListeners();
   }
 
-  void login(dynamic logins, Function onError) async {
+  void login(dynamic logins) async {
     try {
       var response = await Api().dio.post("/users/authenticate", data: logins);
       user = User.fromJson(response.data['data']['user']);
@@ -48,7 +50,7 @@ class AppState with ChangeNotifier {
       sessionHasBeenFetched = true;
       notifyListeners();
     } catch (e) {
-      onError(e.toString());
+      notifyError(e.toString());
       debugPrint(e.toString());
     }
   }

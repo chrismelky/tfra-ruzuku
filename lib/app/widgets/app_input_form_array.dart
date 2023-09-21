@@ -30,9 +30,11 @@ class AppInputFormArray<T> extends StatelessWidget {
   final GlobalKey<FormBuilderState> formKey;
   final List<Widget> formControls;
   final List<AppFormArrayDisplayColumn> displayColumns;
+  final bool canAdd;
+  final bool canDelete;
+  final bool canEdit;
 
   final _editForm = GlobalKey<FormBuilderState>();
-
 
   //Add to form array after pop up form have saved
   _onSave(Map<String, dynamic> item, int? rowIndex) {
@@ -80,6 +82,9 @@ class AppInputFormArray<T> extends StatelessWidget {
       required this.formControls,
       required this.displayColumns,
       required this.uniqueKeyField,
+      this.canAdd = true,
+      this.canDelete = true,
+      this.canEdit = true,
       this.parentUniqueKeyField});
 
   @override
@@ -92,95 +97,165 @@ class AppInputFormArray<T> extends StatelessWidget {
         });
   }
 
-  Widget _getTitle(Map<String, dynamic> u) {
-    AppFormArrayDisplayColumn col = displayColumns[0];
-    if (col != null) {
-      var value = col.parentObjectKey != null
-          ? u[col.parentObjectKey][col.valueField]
-          : u[col.valueField];
-      return col.displayValueBuilder != null
-          ? col.displayValueBuilder!(value)
-          : Text(
-              value.toString(),
-              style: const TextStyle(fontSize: 14),
-            );
-    }
-    return Text("");
-  }
-
-  Widget? _getSubTitle(Map<String, dynamic> u) {
-    if (displayColumns.length > 1) {
-      var subCols = displayColumns.getRange(1, displayColumns.length);
-      String value = subCols
-          .map((col) => col.parentObjectKey != null
-              ? u[col.parentObjectKey][col.valueField]
-              : u[col.valueField])
-          .join("|");
-      return Text(value);
-    }
-    return null;
-  }
-
   Widget _formArrayTable(
       BuildContext context, List<Map<String, dynamic>> items) {
     return Column(
-      children: [
-        Container(
-          decoration: BoxDecoration(
-              border: Border(
-                  bottom: BorderSide(
-                      width: 1, color: Theme.of(context).iconTheme.color!))),
-          child: ListTile(
-            title: Text("Items"),
-            dense: true,
-            trailing: IconButton(
-              color: Theme.of(context).primaryColor,
-              onPressed: () async {
-                Map<String, dynamic>? item = await _createOrUpdate(context);
-                if (item != null) {
-                  _onSave(item, null);
-                }
-              },
-              icon: const Icon(Icons.add),
+      children: <Widget>[
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              label,
+              style: TextStyle(fontWeight: FontWeight.w500),
             ),
-          ),
+            if (canAdd)
+              IconButton(
+                color: Theme.of(context).primaryColor,
+                onPressed: () async {
+                  Map<String, dynamic>? item = await _createOrUpdate(context);
+                  if (item != null) {
+                    _onSave(item, null);
+                  }
+                },
+                icon: const Icon(Icons.add),
+              )
+          ],
         ),
-        ...items.asMap().entries.map((entry) {
-          int idx = entry.key;
-          var u = entry.value;
-          return Container(
-            decoration: BoxDecoration(
-                border: Border(
-                    bottom: BorderSide(
-                        width: 1, color: Theme.of(context).iconTheme.color!))),
-            child: ListTile(
-              dense: true,
-              leading: CircleAvatar(
-                radius: 12,
-                backgroundColor: Theme.of(context).primaryColor,
-                child: Text(
-                  "${idx + 1}",
-                  style: const TextStyle(fontSize: 12, color: Colors.white),
+        Divider(),
+        ...items.map((item) => Column(
+              children: [
+                Column(
+                  children: [
+                    ...displayColumns.map((e) => Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(e.label),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  e.displayValueBuilder != null
+                                      ? e.displayValueBuilder!(item[e.valueField])
+                                      : Text(
+                                          item[e.valueField].toString(),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                              //TODO    const Text('Error', style: TextStyle(fontSize: 9,color: Colors.redAccent),)
+                                ],
+                              )
+                            ],
+                          ),
+                        )),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (canEdit)
+                          IconButton(
+                              onPressed: () async {
+                                Map<String, dynamic>? newItem =
+                                    await _createOrUpdate(context, value: item);
+                                if (newItem != null) {
+                                  _onSave(newItem, null);
+                                }
+                              },
+                              icon: Icon(Icons.edit)),
+                        if (canDelete)
+                          IconButton(
+                              onPressed: () => () {}, icon: Icon(Icons.delete))
+                      ],
+                    )
+                  ],
                 ),
-              ),
-              title: _getTitle(u),
-              subtitle: _getSubTitle(u),
-              trailing: IconButton(
-                onPressed: () => _onDelete(u, idx),
-                icon: const Icon(Icons.remove),
-              ),
-              onTap: () async {
-                Map<String, dynamic>? item =
-                    await _createOrUpdate(context, value: u);
-                if (item != null) {
-                  _onSave(item, null);
-                }
-              },
-            ),
-          );
-        })
+                Divider()
+              ],
+            ))
       ],
     );
+
+    ListView.separated(
+        itemBuilder: (_, idx) {
+          var item = items[idx];
+          return Column(
+            children: [
+              ...displayColumns.map((e) => Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(e.label),
+                      Text(item[e.valueField].toString())
+                    ],
+                  ))
+            ],
+          );
+        },
+        separatorBuilder: (_, idx) => Divider(),
+        itemCount: items.length);
+    // return Column(
+    //   children: [
+    //     Container(
+    //       decoration: BoxDecoration(
+    //           border: Border(
+    //               bottom: BorderSide(
+    //                   width: 1, color: Theme.of(context).iconTheme.color!))),
+    //       child: ListTile(
+    //         title: Text("Items"),
+    //         dense: true,
+    //         trailing: canAdd
+    //             ? IconButton(
+    //                 color: Theme.of(context).primaryColor,
+    //                 onPressed: () async {
+    //                   Map<String, dynamic>? item =
+    //                       await _createOrUpdate(context);
+    //                   if (item != null) {
+    //                     _onSave(item, null);
+    //                   }
+    //                 },
+    //                 icon: const Icon(Icons.add),
+    //               )
+    //             : null,
+    //       ),
+    //     ),
+    //     ...items.asMap().entries.map((entry) {
+    //       int idx = entry.key;
+    //       var u = entry.value;
+    //       return Container(
+    //         decoration: BoxDecoration(
+    //             border: Border(
+    //                 bottom: BorderSide(
+    //                     width: 1, color: Theme.of(context).iconTheme.color!))),
+    //         child: ListTile(
+    //           dense: true,
+    //           leading: CircleAvatar(
+    //             radius: 12,
+    //             backgroundColor: Theme.of(context).primaryColor,
+    //             child: Text(
+    //               "${idx + 1}",
+    //               style: const TextStyle(fontSize: 12, color: Colors.white),
+    //             ),
+    //           ),
+    //           title: _getTitle(u),
+    //           subtitle: _getSubTitle(u),
+    //           trailing: canDelete
+    //               ? IconButton(
+    //                   onPressed: () => _onDelete(u, idx),
+    //                   icon: const Icon(Icons.remove),
+    //                 )
+    //               : null,
+    //           onTap: () async {
+    //             if (canEdit) {
+    //               Map<String, dynamic>? item =
+    //                   await _createOrUpdate(context, value: u);
+    //               if (item != null) {
+    //                 _onSave(item, null);
+    //               }
+    //             }
+    //           },
+    //         ),
+    //       );
+    //     })
+    //   ],
+    // );
   }
 
   Future<dynamic> _createOrUpdate(BuildContext context,

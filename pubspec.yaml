@@ -81,6 +81,7 @@ flutter:
   assets:
     - .env
     - migrations/
+    - assets/images/logo.png
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
