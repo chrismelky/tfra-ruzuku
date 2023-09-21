@@ -77,11 +77,16 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
-    # To add assets to your application, add an assets section, like this:
+  # To add assets to your application, add an assets section, like this:
   assets:
     - .env
     - migrations/
     - assets/images/logo.png
+  fonts:
+    - family: OpenSans
+      fonts:
+        - asset: fonts/OpenSans-VariableFont.ttf
+        - asset: fonts/OpenSans-Italic-VariableFont.ttf
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

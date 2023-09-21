@@ -37,11 +37,7 @@ class _AppState extends State<App> {
                     localizationsDelegates: const [
                       FormBuilderLocalizations.delegate,
                     ],
-              theme: defaultTheme,
-
-              // theme: ThemeData(
-              //         primarySwatch: Colors.green,
-              //       ),
+                    theme: defaultTheme,
                   )
                 : const SplashScreen());
   }

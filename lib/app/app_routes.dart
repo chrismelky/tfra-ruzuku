@@ -5,9 +5,9 @@ import 'package:tfra_mobile/app/providers/app_state.dart';
 import 'package:tfra_mobile/app/screens/app_notifier.dart';
 import 'package:tfra_mobile/app/screens/dashboard/dashboard_screen.dart';
 import 'package:tfra_mobile/app/screens/declaration/declaration_list.dart';
+import 'package:tfra_mobile/app/screens/invoice/invoice_list.dart';
 import 'package:tfra_mobile/app/screens/login/login.dart';
 import 'package:tfra_mobile/app/screens/receive_stock/receive_stock_list.dart';
-import 'package:tfra_mobile/app/screens/sales/create_sale_screen.dart';
 import 'package:tfra_mobile/app/screens/sales/sale-screen.dart';
 import 'package:tfra_mobile/app/screens/stock_transfer/stock_transfer_list.dart';
 
@@ -71,6 +71,11 @@ class AppRoutes {
         path: sales,
         builder: (BuildContext context, GoRouterState state) =>
             const SaleScreen(),
+      ),
+      GoRoute(
+        path: invoice,
+        builder: (BuildContext context, GoRouterState state) =>
+            const InvoiceScreen(),
       ),
     ];
   }
