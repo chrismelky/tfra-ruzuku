@@ -3,7 +3,7 @@ class SalePackage {
   int? id;
   String qrCodeNumber;
   String? fertilizerDealerName;
-  double quantity;
+  int quantity;
   String? fertilizerName;
   double? price = 0;
 

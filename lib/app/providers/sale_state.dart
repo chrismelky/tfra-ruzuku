@@ -13,8 +13,9 @@ class SaleState extends BaseProvider {
       var response = await Api().dio.get(api);
       debugPrint(response.data['data'].toString());
       sales = Sale.listFromJson(response.data['data']);
-    } catch (e) {
+    } catch (e,stackTrance) {
       debugPrint(e.toString());
+      debugPrintStack(stackTrace: stackTrance);
       notifyError(e.toString());
     }
     notifyListeners();

@@ -51,7 +51,7 @@ class _PaymentListScreenState extends State<PaymentListScreen> {
             const SizedBox(
               height: 8,
             ),
-            Text('Payments', style: TextStyle(fontWeight: FontWeight.w500),),
+            const Text('Payments', style: TextStyle(fontWeight: FontWeight.w500),),
             Expanded(
                 child: Card(
                   child: ListView.separated(
