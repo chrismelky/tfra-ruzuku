@@ -70,11 +70,11 @@ class InvoiceProvider extends BaseProvider {
     }
   }
 
- Future<bool> generaInvoice(payload) async {
+  Future<bool> generaInvoice(payload) async {
     isLoading = true;
     try {
       var resp = await Api().dio.post(api, data: payload);
-      return [200,201].contains(resp.statusCode);
+      return [200, 201].contains(resp.statusCode);
     } catch (e, stackTrace) {
       notifyError(e.toString());
       debugPrintStack(stackTrace: stackTrace);
@@ -82,5 +82,19 @@ class InvoiceProvider extends BaseProvider {
       isLoading = false;
     }
     return false;
+  }
+
+  void submit(String uuid) async {
+    isLoading = true;
+    try {
+      var resp = await Api().dio.get('$api/submit/$uuid');
+      notifyInfo('Invoice Submitted');
+      init();
+    } catch (e, stackTrace) {
+      notifyError(e.toString());
+      debugPrintStack(stackTrace: stackTrace);
+    }finally {
+      isLoading = false;
+    }
   }
 }

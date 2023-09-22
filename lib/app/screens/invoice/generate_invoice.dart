@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/models/sale.dart';
 import 'package:tfra_mobile/app/models/sale_summary.dart';
 import 'package:tfra_mobile/app/providers/invoice_provider.dart';
 import 'package:tfra_mobile/app/utils/helpers.dart';
@@ -51,7 +50,8 @@ class _GenerateInvoiceScreenState extends State<GenerateInvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return MessageListener<InvoiceProvider>(child: Consumer<InvoiceProvider>(
+    return MessageListener<InvoiceProvider>(
+        child: Consumer<InvoiceProvider>(
       builder: (context, provider, child) {
         return AppBasePopUpScreen(
             isLoading: provider.isLoading,

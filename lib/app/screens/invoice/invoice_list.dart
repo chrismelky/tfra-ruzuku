@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/app_routes.dart';
 import 'package:tfra_mobile/app/listeners/message_listener.dart';
+import 'package:tfra_mobile/app/models/invoice.dart';
 import 'package:tfra_mobile/app/providers/invoice_provider.dart';
 import 'package:tfra_mobile/app/screens/invoice/generate_invoice.dart';
+import 'package:tfra_mobile/app/screens/invoice/payment_list.dart';
 import 'package:tfra_mobile/app/utils/format_type.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
 import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
@@ -28,6 +30,11 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       context.read<InvoiceProvider>().init();
     }
   }
+
+  _submit(Invoice invoice) {
+    context.read<InvoiceProvider>().submit(invoice.uuid);
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -58,6 +65,14 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                       format: FormatType.currency),
                   AppDetailColumn(header: 'Status', value: invoice.status)
                 ],
+                actionBuilder: (item) =>  Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    if(invoice.status == 'CREATED')
+                    IconButton(onPressed: () =>_submit(invoice), icon: Icon(Icons.send)),
+                    IconButton(onPressed: () => _viewPayment(invoice), icon: Icon(Icons.payments_outlined))
+                  ],
+                ),
               );
             }
             return Row(
@@ -82,4 +97,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       ),
     ));
   }
+
+  _viewPayment(Invoice invoice) async {
+    appRouter.openDialogPage(PaymentListScreen(invoice: invoice));
+  }
+
 }
