@@ -95,8 +95,18 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                       provider.isLoading
                           ? const CircularProgressIndicator()
                           : provider.declarations.isEmpty
-                              ? const Center(
-                                  child: Text('No declaration found'),
+                              ? Center(
+                                  child: Column(
+                                    children: [
+                                      const Text('No declaration found'),
+                                      const SizedBox(
+                                        height: 8,
+                                      ),
+                                      TextButton(
+                                          onPressed: () => provider.init(),
+                                          child: const Text('Reload'))
+                                    ],
+                                  ),
                                 )
                               : TextButton(
                                   onPressed: () => provider.loadMore(),

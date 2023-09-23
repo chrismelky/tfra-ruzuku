@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:tfra_mobile/app/models/sale_package.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
+import 'package:tfra_mobile/app/utils/helpers.dart';
 
 class AddPackageInputField extends StatefulWidget {
   final String name;
@@ -20,12 +20,11 @@ class AddPackageInputField extends StatefulWidget {
 }
 
 class _AddPackageInputFieldState extends State<AddPackageInputField> {
+  Widget packageTitle(Map<String, dynamic> package) =>
+      Text("${package['productName']} | ${package['qrCodeNumber']}");
 
-  Widget packageTitle(Map<String, dynamic> package) => Text(
-      "${package['productName']} - ${package['qrCodeNumber']}");
-
-  Widget packageSubTitle(Map<String, dynamic> package) => Text(
-      "brand: ${package['agroDealerName']}, (${package['quantity']})kg");
+  Widget packageSubTitle(Map<String, dynamic> package) =>
+      Text("${package['quantity']} kg | ${currency.format(package['price'])} TZS");
 
   void deletePackage(FormFieldState field, String qrCodeNumber) {
     List<Map<String, dynamic>> currentPackages = field.value;
@@ -41,12 +40,15 @@ class _AddPackageInputFieldState extends State<AddPackageInputField> {
       validator: FormBuilderValidators.minLength(1,
           errorText: "At least 1 package is required"),
       builder: (field) {
+        double totalPrice = (field.value ?? [])
+            .fold(0.0, (sum, item) => sum + (item['price'] ?? 0.0));
         return Column(children: [
           ListTile(
             onTap: () => _openQrScanner(field),
             style: ListTileStyle.drawer,
             contentPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 0.0),
-            title: Text("Total packages  ${field.value?.length}"),
+            title: Text(
+                "Total packages  ${field.value?.length}, Amount(TZS):${currency.format(totalPrice)}"),
             dense: true,
             subtitle: field.hasError
                 ? Text(field.errorText!,
@@ -133,6 +135,7 @@ class _AddPackageInputFieldState extends State<AddPackageInputField> {
               'productName': fromScanner['product'],
               'agroDealerName': fromScanner['brand'],
               'qrCodeNumber': fromScanner['qr'],
+              'price': fromScanner['price'],
               'quantity': fromScanner['quantity'],
             });
             field.didChange(currentPackages);

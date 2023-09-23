@@ -38,6 +38,11 @@ class _SaleScreenState extends State<SaleScreen> {
         return AppBaseScreen(
             title: 'Sales',
             isLoading: provider.isLoading,
+            actions: [
+              IconButton(
+                  onPressed: () => _addSale(null),
+                  icon: const Icon(Icons.add))
+            ],
             child: ListView.separated(
                 itemBuilder: (_, idx) {
                   if (idx < provider.sales.length) {

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/listeners/message_listener.dart';
@@ -33,20 +32,20 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
   bool _totalPremiseError = false;
   late Map<String, dynamic> _declaration;
   late Map<String, dynamic> _declarationPremises;
-
-  final List<Map<String, dynamic>> _stockTypes = [
-    {'id': 'IMPORTATION', 'name': 'IMPORTATION'},
-    {'id': 'MANUFACTURED', 'name': 'MANUFACTURED'}
-  ];
   List<Map<String, dynamic>> products = List.empty(growable: true);
   int _activeStep = 0;
 
   @override
   void initState() {
+    List<Map<String, dynamic>> declarationPremises = [];
     _declarationPremises = {
-      'declarationPremises': widget.formValues?['declarationPremises'] ?? []
+      'declarationPremises':
+          widget.formValues?['declarationPremises'] ?? declarationPremises
     };
     _declaration = widget.formValues ?? {};
+    if (_declaration['cropId'] != null) {
+      loadProduct(_declaration['cropId']);
+    }
     context.read<StockDeclarationProvider>().fetchPremises();
     super.initState();
   }
@@ -156,11 +155,15 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                           formKey: _productForm,
                           initialValue: _declaration,
                           controls: [
-                            AppInputDropDown(
-                              items: _stockTypes,
-                              name: 'declarationType',
-                              label: 'Declaration Type',
-                            ),
+                            AppFetcher(
+                                api: '/subsidy-declarations/declaration-types',
+                                builder: (items, isLoading) => AppInputDropDown(
+                                      items: items,
+                                      name: 'declarationType',
+                                      label: isLoading
+                                          ? 'Loading..'
+                                          : 'Declaration Type',
+                                    )),
                             AppFetcher(
                                 api: '/crops',
                                 builder: (items, isLoading) => AppInputDropDown(
@@ -171,6 +174,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                             AppInputDropDown(
                               items: products,
                               name: 'productId',
+                              valueColumn: 'productId',
                               label: 'Product',
                               displayValue: 'productName',
                             ),
@@ -178,7 +182,13 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                                 name: 'quantity', label: 'Quantity'),
                           ])),
                   Step(
-                      title: Text('Premises'),
+                      title: const Text('Premises'),
+                      subtitle: _totalPremiseError
+                          ? const Text(
+                              "Total premise amount should be equal to total product amount",
+                              style: TextStyle(
+                                  fontSize: 10, color: Colors.redAccent))
+                          : null,
                       content: AppForm(
                         formKey: _premiseForm,
                         initialValue: _declarationPremises,
@@ -190,15 +200,16 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                             uniqueKeyField: 'premiseId',
                             validators: [
                               FormBuilderValidators.required(
-                                  errorText: "Add at least one usage")
+                                  errorText: "Add at least one premise")
                             ],
                             displayColumns: [
                               AppFormArrayDisplayColumn(
                                   label: "Premise",
                                   valueField: 'premiseId',
                                   displayValueBuilder: (premiseId) => Text(
-                                      provider.premises.firstWhere((e) =>
-                                              e['id'] == premiseId, orElse: () =>{})['name'] ??
+                                      provider.premises.firstWhere(
+                                              (e) => e['id'] == premiseId,
+                                              orElse: () => {})['name'] ??
                                           ''),
                                   width: 170.0),
                               AppFormArrayDisplayColumn(
@@ -224,7 +235,7 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
                         ],
                       )),
                   Step(
-                      title: Text('Packaging'),
+                      title: const Text('Packaging'),
                       content: Column(
                         children: [
                           ...(_declaration['declarationPremises'] ?? [])
@@ -245,9 +256,11 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
           _premiseForm.currentState!.value['declarationPremises']
     };
     try {
-      var resp = await (payload['id'] != null ?
-      Api().dio.put('/subsidy-declarations/${payload['id']}', data: payload):
-      Api().dio.post('/subsidy-declarations', data: payload));
+      var resp = await (payload['id'] != null
+          ? Api()
+              .dio
+              .put('/subsidy-declarations/${payload['id']}', data: payload)
+          : Api().dio.post('/subsidy-declarations', data: payload));
       if (mounted && [200, 201].contains(resp.statusCode)) {
         return resp.data['data'] as Map<String, dynamic>;
       }

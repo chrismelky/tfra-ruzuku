@@ -11,7 +11,7 @@ SalePackage _$SalePackageFromJson(Map<String, dynamic> json) => SalePackage(
       json['id'] as int?,
       json['qrCodeNumber'] as String,
       json['agroDealerName'] as String?,
-      json['quantity'] as int,
+      (json['quantity'] as num).toDouble(),
       json['productName'] as String?,
       (json['price'] as num?)?.toDouble(),
     );

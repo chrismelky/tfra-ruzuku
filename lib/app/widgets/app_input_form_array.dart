@@ -93,21 +93,22 @@ class AppInputFormArray<T> extends StatelessWidget {
         name: name,
         validator: FormBuilderValidators.compose(validators),
         builder: (field) {
-          return _formArrayTable(context, field?.value ?? []);
+          return _formArrayTable(context, field);
         });
   }
 
-  Widget _formArrayTable(
-      BuildContext context, List<Map<String, dynamic>> items) {
+  Widget _formArrayTable(BuildContext context, FormFieldState field) {
+    List<Map<String, dynamic>> items = field.value ?? [];
     return Column(
       children: <Widget>[
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
+           field.isValid ? Text(
               label,
-              style: TextStyle(fontWeight: FontWeight.w500),
-            ),
+              style: const TextStyle(fontWeight: FontWeight.w500),
+            ) : Text(field.errorText ?? '', style: const TextStyle(
+               fontSize: 10, color: Colors.redAccent)),
             if (canAdd)
               IconButton(
                 color: Theme.of(context).primaryColor,
@@ -121,141 +122,63 @@ class AppInputFormArray<T> extends StatelessWidget {
               )
           ],
         ),
-        Divider(),
-        ...items.map((item) => Column(
-              children: [
-                Column(
-                  children: [
-                    ...displayColumns.map((e) => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(e.label),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.end,
-                                children: [
-                                  e.displayValueBuilder != null
-                                      ? e.displayValueBuilder!(item[e.valueField])
-                                      : Text(
-                                          item[e.valueField].toString(),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.w500),
-                                        ),
-                              //TODO    const Text('Error', style: TextStyle(fontSize: 9,color: Colors.redAccent),)
-                                ],
-                              )
-                            ],
-                          ),
-                        )),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        if (canEdit)
-                          IconButton(
-                              onPressed: () async {
-                                Map<String, dynamic>? newItem =
-                                    await _createOrUpdate(context, value: item);
-                                if (newItem != null) {
-                                  _onSave(newItem, null);
-                                }
-                              },
-                              icon: Icon(Icons.edit)),
-                        if (canDelete)
-                          IconButton(
-                              onPressed: () => () {}, icon: Icon(Icons.delete))
-                      ],
-                    )
-                  ],
-                ),
-                Divider()
-              ],
-            ))
-      ],
-    );
-
-    ListView.separated(
-        itemBuilder: (_, idx) {
-          var item = items[idx];
+        const Divider(),
+        ...items.asMap().entries.map((entry) {
+          var item = entry.value;
+          var idx = entry.key;
           return Column(
             children: [
-              ...displayColumns.map((e) => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Column(
+                children: [
+                  ...displayColumns.map((e) => Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(e.label),
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.end,
+                              children: [
+                                e.displayValueBuilder != null
+                                    ? e.displayValueBuilder!(item[e.valueField])
+                                    : Text(
+                                        item[e.valueField].toString(),
+                                        style: const TextStyle(
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                //TODO    const Text('Error', style: TextStyle(fontSize: 9,color: Colors.redAccent),)
+                              ],
+                            )
+                          ],
+                        ),
+                      )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Text(e.label),
-                      Text(item[e.valueField].toString())
+                      if (canEdit)
+                        IconButton(
+                            onPressed: () async {
+                              Map<String, dynamic>? newItem =
+                                  await _createOrUpdate(context, value: item);
+                              if (newItem != null) {
+                                _onSave(newItem, null);
+                              }
+                            },
+                            icon: const Icon(Icons.edit)),
+                      if (canDelete)
+                        IconButton(
+                            onPressed: () => _onDelete(item, idx),
+                            icon: const Icon(Icons.delete))
                     ],
-                  ))
+                  )
+                ],
+              ),
+              const Divider()
             ],
           );
-        },
-        separatorBuilder: (_, idx) => Divider(),
-        itemCount: items.length);
-    // return Column(
-    //   children: [
-    //     Container(
-    //       decoration: BoxDecoration(
-    //           border: Border(
-    //               bottom: BorderSide(
-    //                   width: 1, color: Theme.of(context).iconTheme.color!))),
-    //       child: ListTile(
-    //         title: Text("Items"),
-    //         dense: true,
-    //         trailing: canAdd
-    //             ? IconButton(
-    //                 color: Theme.of(context).primaryColor,
-    //                 onPressed: () async {
-    //                   Map<String, dynamic>? item =
-    //                       await _createOrUpdate(context);
-    //                   if (item != null) {
-    //                     _onSave(item, null);
-    //                   }
-    //                 },
-    //                 icon: const Icon(Icons.add),
-    //               )
-    //             : null,
-    //       ),
-    //     ),
-    //     ...items.asMap().entries.map((entry) {
-    //       int idx = entry.key;
-    //       var u = entry.value;
-    //       return Container(
-    //         decoration: BoxDecoration(
-    //             border: Border(
-    //                 bottom: BorderSide(
-    //                     width: 1, color: Theme.of(context).iconTheme.color!))),
-    //         child: ListTile(
-    //           dense: true,
-    //           leading: CircleAvatar(
-    //             radius: 12,
-    //             backgroundColor: Theme.of(context).primaryColor,
-    //             child: Text(
-    //               "${idx + 1}",
-    //               style: const TextStyle(fontSize: 12, color: Colors.white),
-    //             ),
-    //           ),
-    //           title: _getTitle(u),
-    //           subtitle: _getSubTitle(u),
-    //           trailing: canDelete
-    //               ? IconButton(
-    //                   onPressed: () => _onDelete(u, idx),
-    //                   icon: const Icon(Icons.remove),
-    //                 )
-    //               : null,
-    //           onTap: () async {
-    //             if (canEdit) {
-    //               Map<String, dynamic>? item =
-    //                   await _createOrUpdate(context, value: u);
-    //               if (item != null) {
-    //                 _onSave(item, null);
-    //               }
-    //             }
-    //           },
-    //         ),
-    //       );
-    //     })
-    //   ],
-    // );
+        })
+      ],
+    );
   }
 
   Future<dynamic> _createOrUpdate(BuildContext context,

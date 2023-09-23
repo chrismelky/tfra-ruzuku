@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/listeners/message_listener.dart';
@@ -32,12 +33,13 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
   @override
   void initState() {
     _selectedSale = widget.sale;
+    List<Map<String, dynamic>> saleTransactionPackages = [];
     _initialFormValues = _selectedSale != null
         ? {
             ..._selectedSale!.toJson(),
             'transactionDate': _selectedSale?.transactionDate
           }
-        : {"saleTransactionPackages": []};
+        : {"saleTransactionPackages": saleTransactionPackages};
     debugPrint(_initialFormValues.toString());
     super.initState();
   }
@@ -51,11 +53,15 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
             .format(_formKey.currentState!.fields["transactionDate"]!.value)
       };
       if (byStatus == SaleStatus.SOLD) {
-        bool? generated = await context.read<SaleProvider>().generateOtp(payload);
-        if (generated ==true && mounted) {
+        bool? generated =
+            await context.read<SaleProvider>().generateOtp(payload);
+        if (generated == true && mounted) {
           String? otp = await otpDialog(context, payload);
           if (otp != null && mounted) {
-            context.read<SaleProvider>().confirmSale(payload, otp).then((isSaved) {
+            context
+                .read<SaleProvider>()
+                .confirmSale(payload, otp)
+                .then((isSaved) {
               if (isSaved) {
                 Navigator.of(context).pop(true);
               }
@@ -109,14 +115,16 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
                     formKey: _formKey,
                     initialValue: _initialFormValues,
                     controls: [
-                      const AppInputDate(
-                          name: 'transactionDate', label: 'Transaction Date'),
+                       AppInputDate(
+                          name: 'transactionDate', label: 'Transaction Date',
+                          validators: [FormBuilderValidators.required(errorText: "Transaction date is required")]
+                      ),
                       AppInputDropDown(
                           items: ClientType.values
                               .map((e) => {'id': e.name, 'name': e.name})
                               .toList(),
                           name: 'partyType',
-                          label: 'Client Type'),
+                          label: 'Client Type', validators: [FormBuilderValidators.required(errorText: "Client is required")],),
                       ClientSelectField(
                           name: 'partyId',
                           clientName: _selectedSale?.partyName,

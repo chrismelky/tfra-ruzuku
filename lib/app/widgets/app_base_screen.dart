@@ -33,8 +33,10 @@ class AppBaseScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                Builder(builder: (_) {})
                 CircleAvatar(
-                  child: Text("U"),
+                  child: Text((value.user?.name ?? 'UZ')),
+                  backgroundColor: Colors.white,
                 ),
                 SizedBox(width: 10,),
                 Text("${context.select<AppState, String?>(

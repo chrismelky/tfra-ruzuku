@@ -8,7 +8,7 @@ class SalePackage {
   final int? id;
   final String qrCodeNumber;
   final String? agroDealerName;
-  final int quantity;
+  final double quantity;
   final String? productName;
   final double? price;
 
