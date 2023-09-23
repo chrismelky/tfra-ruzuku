@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/api/api.dart';
 import 'package:tfra_mobile/app/app_routes.dart';
@@ -7,7 +6,6 @@ import 'package:tfra_mobile/app/listeners/message_listener.dart';
 import 'package:tfra_mobile/app/providers/stock_transfer_provider.dart';
 import 'package:tfra_mobile/app/screens/stock_transfer/add_transfer.dart';
 import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_button.dart';
 import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
 
 class StockTransferListScreen extends StatefulWidget {
@@ -64,7 +62,7 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                           Expanded(child: Container()),
                           TextButton(
                               onPressed: () => _approve(item['uuid']),
-                              child: Text('Approve')),
+                              child: const Text('Approve')),
                           const SizedBox(
                             width: 4,
                           ),
@@ -120,8 +118,8 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Confirm'),
-            content: Text('Are you sure you want to do this?'),
+            title: const Text('Confirm'),
+            content: const Text('Are you sure you want to do this?'),
             actions: [
               TextButton(
                 onPressed: () async {
@@ -131,13 +129,13 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                     Navigator.of(context).pop(true);
                   }
                 },
-                child: Text('OK'),
+                child: const Text('OK'),
               ),
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: Text('Cancel'),
+                child: const Text('Cancel'),
               ),
             ],
           );
