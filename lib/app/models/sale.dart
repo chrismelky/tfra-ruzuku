@@ -1,53 +1,34 @@
+import 'package:json_annotation/json_annotation.dart';
 import 'package:tfra_mobile/app/models/sale_package.dart';
-import 'package:intl/intl.dart';
 
+part 'sale.g.dart';
+
+@JsonSerializable(explicitToJson: true)
 class Sale {
-  String? uuid;
-  int? partyId;
-  String? partyType;
-  String? partyName;
-  DateTime? transactionDate;
-  double? totalPrice;
-  double? totalQuantity;
-  String saleStatus;
-  List<SalePackage> saleTransactionPackages;
+  final int? id;
+  final String? uuid;
+  final int? partyId;
+  final String? partyType;
+  final String? partyName;
+  final DateTime transactionDate;
+  final double? totalPrice;
+  final double? totalQuantity;
+  final String saleStatus;
+  final String? controlNumber;
+  final List<SalePackage> saleTransactionPackages;
 
   Sale(
-      {this.partyId,
+      this.uuid,
+      this.partyId,
       this.partyType,
       this.partyName,
       this.transactionDate,
       this.totalPrice,
-      required this.saleStatus,
       this.totalQuantity,
-      this.uuid,
-      required this.saleTransactionPackages});
+      this.saleStatus,
+      this.saleTransactionPackages, this.controlNumber, this.id);
 
-  factory Sale.fromJson(Map<String, dynamic> json) => Sale(
-      uuid: json["uuid"],
-      partyId: json["partyId"],
-      partyType: json["partyType"],
-      partyName: json["partyName"],
-      transactionDate: DateFormat("yyyy-MM-dd").parse(json["transactionDate"]),
-      totalPrice: json["totalPrice"],
-      saleStatus: json["saleStatus"],
-      totalQuantity: json["totalQuantity"],
-      saleTransactionPackages: List<SalePackage>.from(
-          json["saleTransactionPackages"]
-              .map((model) => SalePackage.fromJson(model))));
+  factory Sale.fromJson(Map<String, dynamic> json) => _$SaleFromJson(json);
 
-  static listFromJson(dynamic json) =>
-      List<Sale>.from(json.map((e) => Sale.fromJson(e)));
-
-  Map<String, dynamic> toJson() => {
-        "partyId": partyId,
-        "partyType": partyType,
-        "partyName": partyName,
-        "transactionDate": transactionDate,
-        "totalPrice": totalPrice,
-        "saleStatus": saleStatus,
-        "totalQuantity": totalQuantity,
-        "saleTransactionPackages": List<Map<String, dynamic>>.from(
-            saleTransactionPackages.map((e) => e.toJson()))
-      };
+  Map<String, dynamic> toJson() => _$SaleToJson(this);
 }

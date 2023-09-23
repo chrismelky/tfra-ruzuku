@@ -7,7 +7,7 @@ import 'package:tfra_mobile/app/providers/app_state.dart';
 import 'package:tfra_mobile/app/providers/invoice_provider.dart';
 import 'package:tfra_mobile/app/providers/payment_provider.dart';
 import 'package:tfra_mobile/app/providers/receive_stock_provider.dart';
-import 'package:tfra_mobile/app/providers/sale_state.dart';
+import 'package:tfra_mobile/app/providers/sale_provider.dart';
 import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
 import 'package:tfra_mobile/app/providers/stock_transfer_provider.dart';
 
@@ -19,7 +19,7 @@ Future<void> main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider<AppState>(create: (_) => appState),
-        ChangeNotifierProvider<SaleState>(create: (_) => saleState),
+        ChangeNotifierProvider<SaleProvider>(create: (_) => saleProvider),
         ChangeNotifierProvider<StockDeclarationProvider>(
             create: (_) => StockDeclarationProvider()),
         ChangeNotifierProvider<StockTransferProvider>(

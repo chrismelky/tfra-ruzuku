@@ -1,15 +1,30 @@
+import 'package:json_annotation/json_annotation.dart';
+
+part 'searched_client.g.dart';
+@JsonSerializable(explicitToJson: true)
 class SearchedClient {
-  int? id;
-  String? name;
+  final int id;
+  final String? firstName;
+  final String? middleName;
+  final String? lastName;
+  final String? name;
+  final String? mobile;
+  final String? email;
+  final String? gender;
+  final String? adminHierarchyName;
+  final DateTime? dateOfBirth;
 
-  SearchedClient({this.id, this.name});
+  SearchedClient(
+      this.id,
+      this.firstName,
+      this.middleName,
+      this.lastName,
+      this.mobile,
+      this.email,
+      this.gender,
+      this.adminHierarchyName,
+      this.dateOfBirth, this.name);
 
-  factory SearchedClient.empty() => SearchedClient();
-
-  factory SearchedClient.formFarmer(Map<String, dynamic> json) =>
-      SearchedClient(
-          id: json['id'], name: json['firstName'] + " " + json['lastName']);
-
-  factory SearchedClient.fromCooperative(Map<String, dynamic> json) =>
-      SearchedClient(id: json['id'], name: json['businessName']);
+    factory SearchedClient.fromJson(Map<String,dynamic> json)=>_$SearchedClientFromJson(json);
+    Map<String, dynamic> toJson()=> _$SearchedClientToJson(this);
 }

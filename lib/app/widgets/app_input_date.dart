@@ -18,6 +18,7 @@ class AppInputDate extends StatelessWidget {
       inputType: InputType.date,
       decoration: InputDecoration(
         hintText: label,
+        suffixIcon: const Icon(Icons.calendar_month)
       ),
     );
   }
