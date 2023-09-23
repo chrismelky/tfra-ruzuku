@@ -109,8 +109,14 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
     }
   }
 
-  _approve(String uuid) {
-    showDialog(
+  _approve(String uuid) async {
+    bool? approved = await _confirmApprove(uuid);
+    if(approved == true && mounted) {
+      context.read<StockTransferProvider>().init();
+    }
+  }
+  _confirmApprove(String uuid)  {
+   return showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
@@ -121,8 +127,8 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                 onPressed: () async {
                   var resp =
                       await Api().dio.get('/stock-transfers/confirm/$uuid');
-                  if ([200, 201].contains(resp.data) && mounted) {
-                    Navigator.of(context).pop();
+                  if ([200, 201].contains(resp.statusCode) && mounted) {
+                    Navigator.of(context).pop(true);
                   }
                 },
                 child: Text('OK'),

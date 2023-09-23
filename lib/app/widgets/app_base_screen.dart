@@ -27,52 +27,61 @@ class AppBaseScreen extends StatelessWidget {
     return Scaffold(
       drawer: Drawer(
           child: ListView(children: [
-        DrawerHeader(
-            decoration: const BoxDecoration(color: Colors.green),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Builder(builder: (_) {})
-                CircleAvatar(
-                  child: Text((value.user?.name ?? 'UZ')),
-                  backgroundColor: Colors.white,
-                ),
-                SizedBox(width: 10,),
-                Text("${context.select<AppState, String?>(
-                  (value) => value.user?.name,
-                )}")
-              ],
-            )),
-        SingleChildScrollView(
-            child: Column(children: const [
-          AppMenuItem(
-              icon: Icons.home,
-              label: 'Home',
-              route: AppRoutes.dashboard),
-              AppMenuItem(
-              icon: Icons.launch,
-              label: 'Stock Declaration',
-              route: AppRoutes.declaration),
-          AppMenuItem(
-              icon: Icons.launch,
-              label: 'Stock Transfer',
-              route: AppRoutes.transfer),
-          AppMenuItem(
-              icon: Icons.launch,
-              label: 'Receive Stock',
-              route: AppRoutes.receive),
-          AppMenuItem(
-              icon: Icons.point_of_sale_outlined,
-              label: 'Sales',
-              route: AppRoutes.sales),
-        ])),
-        TextButton(
-            onPressed: () => context.read<AppState>().logout(),
-            child: const Text("Logout"))
-      ])),
+            DrawerHeader(
+                decoration: const BoxDecoration(color: Colors.green),
+                child: Selector<AppState, String?>(
+                  shouldRebuild: (previous, next) {
+                    return true;
+                  },
+                  selector: (context, provider) => provider.user?.name,
+                  builder: (context, value, child) {
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundColor: Colors.white,
+                          child: Text((value ?? 'U').substring(0,1)),
+                        ),
+                        const SizedBox(width: 10,),
+                        Text("${context.select<AppState, String?>(
+                              (value) => value.user?.name,
+                        )}")
+                      ],
+                    );
+                  },
+                )),
+            SingleChildScrollView(
+                child: Column(children: const [
+                  AppMenuItem(
+                      icon: Icons.home,
+                      label: 'Home',
+                      route: AppRoutes.dashboard),
+                  AppMenuItem(
+                      icon: Icons.launch,
+                      label: 'Stock Declaration',
+                      route: AppRoutes.declaration),
+                  AppMenuItem(
+                      icon: Icons.launch,
+                      label: 'Stock Transfer',
+                      route: AppRoutes.transfer),
+                  AppMenuItem(
+                      icon: Icons.launch,
+                      label: 'Receive Stock',
+                      route: AppRoutes.receive),
+                  AppMenuItem(
+                      icon: Icons.point_of_sale_outlined,
+                      label: 'Sales',
+                      route: AppRoutes.sales),
+                ])),
+            TextButton(
+                onPressed: () => context.read<AppState>().logout(),
+                child: const Text("Logout"))
+          ])),
       appBar: AppBar(
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: Theme
+            .of(context)
+            .primaryColor,
         title: Text(
           title,
           style: const TextStyle(
@@ -91,7 +100,7 @@ class AppBaseScreen extends StatelessWidget {
               alignment: Alignment.topCenter,
               child: Padding(
                 padding:
-                    const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0),
+                const EdgeInsets.symmetric(vertical: 0.0, horizontal: 0),
                 child: child,
               ),
             ),

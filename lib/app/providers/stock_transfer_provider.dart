@@ -19,12 +19,12 @@ class StockTransferProvider extends BaseProvider {
       _stockTransfers.addAll(value);
       notifyListeners();
     } else {
-      _page = _page > 0 ? _page- 1 : 0;
+      _page = _page > 0 ? _page - 1 : 0;
     }
   }
 
   Future<void> loadMore() async {
-    _page = _page +1;
+    _page = _page + 1;
     fetchTransfers();
   }
 
@@ -43,5 +43,21 @@ class StockTransferProvider extends BaseProvider {
     } finally {
       isLoading = false;
     }
+  }
+
+  Future<bool?> saveTransfer(payload) async {
+    isLoading = true;
+    try {
+      var resp = await (payload['id'] != null
+          ? Api().dio.put('/stock-transfers/${payload['uuid']}', data: payload)
+          : Api().dio.post('/stock-transfers', data: payload));
+      notifyInfo('Transfer created');
+      return ([200, 201].contains(resp.statusCode));
+    } catch (e) {
+      notifyError(e.toString());
+    } finally {
+      isLoading = false;
+    }
+    return false;
   }
 }

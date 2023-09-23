@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import 'package:tfra_mobile/app/api/api.dart';
+import 'package:tfra_mobile/app/listeners/message_listener.dart';
 import 'package:tfra_mobile/app/providers/stock_transfer_provider.dart';
 import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
 import 'package:tfra_mobile/app/widgets/app_button.dart';
@@ -50,13 +52,14 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
       setState(() => stockCards = (resp.data['data'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
           .map((e) =>
-              {...e, 'name': "${e['productName']} ${e['packagingOptionName']}"})
+              {...e, 'name': "${e['productName']} ${e['packagingOptionName']} - ${e['quantity']} kg available"})
           .toList());
     }
   }
 
-  loadPremise(int agroDealerId) async {
-    var resp = await Api().dio.get("/premises/by-agro-dealer/$agroDealerId");
+  loadPremise(int? agroDealerId) async {
+    var api = agroDealerId != null ? "/premises/by-agro-dealer/$agroDealerId" : "/premises";
+    var resp = await Api().dio.get(api);
     if (resp.statusCode == 200) {
       setState(() => premises = (resp.data['data'] as List<dynamic>)
           .map((e) => e as Map<String, dynamic>)
@@ -71,84 +74,89 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return AppBasePopUpScreen(
-        title: 'Add Transfer',
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              AppForm(
-                formKey: _transferForm,
-                initialValue: _transferFormInitValues,
-                controls: [
-                  AppInputDropDown(
-                    items: _transferTypes,
-                    name: 'transferType',
-                    label: 'Transfer Type',
-                    onChange: (value) => setState(() => selectedType = value),
-                  ),
-                  Builder(builder: (_) {
-                    if (selectedType == 'DEALER_TRANSFER') {
-                      return AppFetcher(
-                          api: '/agro-dealers/mapped-dealers',
-                          builder: (items, isLoading) => AppInputDropDown(
-                              items: items,
-                              name: 'toAgroDealerId',
-                              label: 'To AgroDealer'));
-                    }
-                    return const AppInputHidden(
-                      fieldName: '_',
-                      value: 0,
-                    );
-                  }),
-                  if (selectedType != null)
+    return MessageListener<StockTransferProvider>(
+      child: Consumer<StockTransferProvider>(
+  builder: (context, provider, child) {
+  return AppBasePopUpScreen(
+          title: 'Add Transfer',
+          isLoading: provider.isLoading,
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                AppForm(
+                  formKey: _transferForm,
+                  initialValue: _transferFormInitValues,
+                  controls: [
+                    AppInputDropDown(
+                      items: _transferTypes,
+                      name: 'transferType',
+                      label: 'Transfer Type',
+                      onChange: (value) {
+                        setState(() => {selectedType = value, premises = List.empty()});
+                        if(value == 'PREMISE_TRANSFER') {
+                          loadPremise(null);
+                        }
+                      },
+                    ),
                     Builder(builder: (_) {
                       if (selectedType == 'DEALER_TRANSFER') {
-                        return AppInputDropDown(
-                            items: premises,
-                            name: 'toPremiseId',
-                            label: 'Premise');
+                        return AppFetcher(
+                            api: '/agro-dealers/mapped-dealers',
+                            builder: (items, isLoading) => AppInputDropDown(
+                                items: items,
+                                name: 'toAgroDealerId',
+                                displayValue: 'businessName',
+                                onChange: (agroDealerId) =>
+                                    loadPremise(agroDealerId),
+                                label: 'To AgroDealer'));
                       }
-                      return AppFetcher(
-                          api: '/premises',
-                          builder: (items, isLoading) => AppInputDropDown(
-                              items: items,
-                              name: 'toPremiseId',
-                              label: 'Premise'));
+                      return const AppInputHidden(
+                        fieldName: '_',
+                        value: 0,
+                      );
                     }),
-                  AppInputFormArray(
-                    name: 'stockTransferItems',
-                    label: 'Stock Items',
-                    uniqueKeyField: 'stockCardUuid',
-                    formKey: _transferForm,
-                    formControls: [
-                      AppInputDropDown(
-                        items: stockCards,
-                        name: 'stockCardUuid',
-                        valueColumn: 'uuid',
-                        label: 'Stock Item',
-                      ),
-                      const AppInputNumber(name: 'quantity', label: 'Quantity'),
-                      const AppInputNumber(
-                          name: 'unitPricePaid', label: 'Price Pain'),
-                    ],
-                    displayColumns: [
-                      AppFormArrayDisplayColumn(
-                          label: 'Item',
-                          valueField: 'stockCardUuid',
-                          displayValueBuilder: (stockCardUuid) => Text(
-                              stockCards.firstWhere(
-                                  (e) => e['uuid'] == stockCardUuid,
-                                  orElse: () => {})['name'])),
-                      AppFormArrayDisplayColumn(
-                          label: 'Quantity', valueField: 'quantity'),
-                    ],
-                  ),
-                  AppButton(onPress: () => _save(), label: "Submit")
-                ],
-              ),
-            ],
-          ),
-        ));
+                    AppInputDropDown(
+                        items: premises, name: 'toPremiseId', label: 'Premise'),
+                    AppInputFormArray(
+                      name: 'stockTransferItems',
+                      label: 'Stock Items',
+                      uniqueKeyField: 'stockCardUuid',
+                      validators: [
+                        FormBuilderValidators.required(
+                            errorText: "Add at least one Item")
+                      ],                    formKey: _transferForm,
+                      formControls: [
+                        AppInputDropDown(
+                          items: stockCards,
+                          name: 'stockCardUuid',
+                          valueColumn: 'uuid',
+                          label: 'Stock Item',
+                        ),
+                        const AppInputNumber(name: 'quantity', label: 'Quantity'),
+                        const AppInputNumber(
+                            name: 'unitPricePaid', label: 'Price Pain'),
+                      ],
+                      displayColumns: [
+                        AppFormArrayDisplayColumn(
+                            label: 'Item',
+                            valueField: 'stockCardUuid',
+                            displayValueBuilder: (stockCardUuid) => Text(
+                                stockCards.firstWhere(
+                                    (e) => e['uuid'] == stockCardUuid,
+                                    orElse: () => {})['name'])),
+                        AppFormArrayDisplayColumn(
+                            label: 'Quantity', valueField: 'quantity'),
+                      ],
+                    ),
+                    AppButton(onPress: () => _save(), label: "Submit")
+                  ],
+                ),
+              ],
+            ),
+          ));
+  },
+),
+    );
   }
 
   _save() async {
@@ -168,17 +176,10 @@ class _AddStockTransferScreenState extends State<AddStockTransferScreen> {
           };
         }).toList()
       };
-      debugPrint(payload.toString());
-      try {
-        var resp = await (payload['id'] != null
-            ? Api().dio.put('/stock-transfers/${payload['uuid']}', data: payload)
-            : Api().dio.post('/stock-transfers', data: payload));
-        if (mounted && [200, 201].contains(resp.statusCode)) {
-          Navigator.of(context).pop(true);
-        }
-      } catch (e) {
-        context.read<StockTransferProvider>().notifyError(e.toString());
-      }
+     bool? saved = await context.read<StockTransferProvider>().saveTransfer(payload);
+     if(mounted && saved == true) {
+       Navigator.of(context).pop(true);
+     }
     }
   }
 }

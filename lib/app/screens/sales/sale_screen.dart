@@ -63,6 +63,7 @@ class _SaleScreenState extends State<SaleScreen> {
                       ],
                       title: sale.saleStatus,
                       actionBuilder: (item) => Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
                           if (sale.saleStatus == 'NEW')
                             IconButton(
