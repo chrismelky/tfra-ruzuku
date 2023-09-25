@@ -9,6 +9,7 @@ import 'package:ssmis_tz/app/providers/payment_provider.dart';
 import 'package:ssmis_tz/app/providers/receive_stock_provider.dart';
 import 'package:ssmis_tz/app/providers/sale_provider.dart';
 import 'package:ssmis_tz/app/providers/stock_declaration_provider.dart';
+import 'package:ssmis_tz/app/providers/stock_on_hand_provider.dart';
 import 'package:ssmis_tz/app/providers/stock_transfer_provider.dart';
 
 Future<void> main() async {
@@ -29,7 +30,9 @@ Future<void> main() async {
         ChangeNotifierProvider<InvoiceProvider>(
             create: (_) => InvoiceProvider()),
         ChangeNotifierProvider<PaymentProvider>(
-            create: (_) => PaymentProvider())
+            create: (_) => PaymentProvider()),
+        ChangeNotifierProvider<StockOnHandProvider>(
+            create: (_) => StockOnHandProvider())
       ],
       child: App(),
     ),

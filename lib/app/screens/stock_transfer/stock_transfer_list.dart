@@ -34,7 +34,8 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
             onPressed: () => _addTransfer(null), icon: const Icon(Icons.add))
       ],
       child: Consumer<StockTransferProvider>(
-          builder: (_, provider, child) => ListView.separated(
+          builder: (_, provider, child) =>
+              ListView.separated(
               itemBuilder: (_, idx) {
                 if (idx < provider.stockTransfers.length) {
                   var transfer = provider.stockTransfers[idx];
@@ -94,7 +95,8 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                 );
               },
               separatorBuilder: (context, idx) => const Divider(),
-              itemCount: provider.stockTransfers.length + 1)),
+              itemCount: provider.stockTransfers.length + 1)
+      ),
     ));
   }
 

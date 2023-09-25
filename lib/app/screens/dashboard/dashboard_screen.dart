@@ -20,12 +20,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2, crossAxisSpacing: 4, mainAxisSpacing: 4),
         children: [
-          buildCard("Sales", Icons.point_of_sale_rounded, AppRoutes.sales),
-          buildCard("Invoices", Icons.monetization_on_rounded, AppRoutes.invoice),
+          buildCard("Sales", Icons.point_of_sale_outlined, AppRoutes.sales),
+          buildCard(
+              "Invoices", Icons.monetization_on_outlined, AppRoutes.invoice),
           buildCard(
               "Declarations", Icons.list_alt_outlined, AppRoutes.declaration),
-          buildCard("Transfer Stock", Icons.send, AppRoutes.transfer),
-          buildCard("Receive Stock", Icons.send, AppRoutes.receive)
+          buildCard("Transfer Stock", Icons.shopping_bag_outlined, AppRoutes.transfer),
+          buildCard(
+              "Receive Stock", Icons.receipt_long_sharp, AppRoutes.receive),
+          buildCard(
+              "Stock On Hand", Icons.inventory_2_outlined, AppRoutes.stockOnHand)
         ],
       ),
     );
@@ -35,19 +39,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
       // onTap: () => AddRevenueItemDialog(context).addItem(item),
       onTap: () => context.go(route),
       child: Card(
-        elevation: 3,
+        elevation: 2,
         child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                title,
-                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
-              ),
-              SizedBox(
+              Icon(icon, size: 64, color: Theme.of(context).primaryColor.withOpacity(0.5)),
+              const SizedBox(
                 height: 10,
               ),
-              Icon(icon)
+              Text(
+                title,
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                  color: Colors.black.withOpacity(0.5),
+                    ),
+              ),
             ]),
       ));
 }

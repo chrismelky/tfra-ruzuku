@@ -4,11 +4,12 @@ import 'package:provider/provider.dart';
 import 'package:ssmis_tz/app/providers/app_state.dart';
 import 'package:ssmis_tz/app/screens/app_notifier.dart';
 import 'package:ssmis_tz/app/screens/dashboard/dashboard_screen.dart';
-import 'package:ssmis_tz/app/screens/declaration/declaration_list.dart';
+import 'package:ssmis_tz/app/screens/declaration/declaration_screen.dart';
 import 'package:ssmis_tz/app/screens/invoice/invoice_list.dart';
 import 'package:ssmis_tz/app/screens/login/login.dart';
 import 'package:ssmis_tz/app/screens/receive_stock/receive_stock_list.dart';
 import 'package:ssmis_tz/app/screens/sales/sale_screen.dart';
+import 'package:ssmis_tz/app/screens/stock_on_hand/stock_on_hand_screen.dart';
 import 'package:ssmis_tz/app/screens/stock_transfer/stock_transfer_list.dart';
 
 class AppRoutes {
@@ -18,6 +19,7 @@ class AppRoutes {
   static const String transfer = "/transfer";
   static const String receive = "/receive";
   static const String invoice = "/invoice";
+  static const String stockOnHand = "/stock_on_hand";
   static const String login = "/login";
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -68,6 +70,10 @@ class AppRoutes {
             const ReceiveStockListScreen(),
       ),
       GoRoute(
+        path: stockOnHand,
+        builder: (BuildContext context, GoRouterState state) =>
+            const StockOnHandScreen()), 
+    GoRoute(
         path: sales,
         builder: (BuildContext context, GoRouterState state) =>
             const SaleScreen(),
