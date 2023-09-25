@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/mixin/message_notifier_mixin.dart';
+import 'package:ssmis_tz/app/mixin/message_notifier_mixin.dart';
 import 'package:tuple/tuple.dart';
 
 class MessageListener<T extends MessageNotifierMixin> extends StatelessWidget {

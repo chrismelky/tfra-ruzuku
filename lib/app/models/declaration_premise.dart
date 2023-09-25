@@ -1,7 +1,7 @@
 import 'dart:ffi';
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tfra_mobile/app/models/packaging_option.dart';
+import 'package:ssmis_tz/app/models/packaging_option.dart';
 
 part 'declaration_premise.g.dart';
 

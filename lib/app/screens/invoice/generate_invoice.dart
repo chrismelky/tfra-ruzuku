@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/models/sale_summary.dart';
-import 'package:tfra_mobile/app/providers/invoice_provider.dart';
-import 'package:tfra_mobile/app/utils/helpers.dart';
-import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/models/sale_summary.dart';
+import 'package:ssmis_tz/app/providers/invoice_provider.dart';
+import 'package:ssmis_tz/app/utils/helpers.dart';
+import 'package:ssmis_tz/app/widgets/app_base_popup_screen.dart';
 
 class GenerateInvoiceScreen extends StatefulWidget {
   const GenerateInvoiceScreen({Key? key}) : super(key: key);

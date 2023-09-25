@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/models/invoice.dart';
-import 'package:tfra_mobile/app/providers/payment_provider.dart';
-import 'package:tfra_mobile/app/utils/helpers.dart';
-import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/models/invoice.dart';
+import 'package:ssmis_tz/app/providers/payment_provider.dart';
+import 'package:ssmis_tz/app/utils/helpers.dart';
+import 'package:ssmis_tz/app/widgets/app_base_popup_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
 
 class PaymentListScreen extends StatefulWidget {
   final Invoice invoice;
@@ -31,6 +31,7 @@ class _PaymentListScreenState extends State<PaymentListScreen> {
     return MessageListener<PaymentProvider>(
         child: Consumer<PaymentProvider>(
       builder: (context, provider, child) => AppBasePopUpScreen(
+        isLoading: provider.isLoading,
         title: 'Payments',
         child: Column(
 

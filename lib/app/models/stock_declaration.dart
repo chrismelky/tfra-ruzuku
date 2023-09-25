@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tfra_mobile/app/models/declaration_premise.dart';
+import 'package:ssmis_tz/app/models/declaration_premise.dart';
 
 part 'stock_declaration.g.dart';
 

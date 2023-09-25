@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/models/stock_transfer.dart';
-import 'package:tfra_mobile/app/providers/receive_stock_provider.dart';
-import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_button.dart';
-import 'package:tfra_mobile/app/widgets/app_form.dart';
-import 'package:tfra_mobile/app/widgets/app_input_form_array.dart';
-import 'package:tfra_mobile/app/widgets/app_input_number.dart';
-import 'package:tfra_mobile/app/widgets/app_input_text.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/models/stock_transfer.dart';
+import 'package:ssmis_tz/app/providers/receive_stock_provider.dart';
+import 'package:ssmis_tz/app/widgets/app_base_popup_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_button.dart';
+import 'package:ssmis_tz/app/widgets/app_form.dart';
+import 'package:ssmis_tz/app/widgets/app_input_form_array.dart';
+import 'package:ssmis_tz/app/widgets/app_input_number.dart';
+import 'package:ssmis_tz/app/widgets/app_input_text.dart';
 
 class ReceiveStockDetailScreen extends StatefulWidget {
   final StockTransfer stockTransfer;

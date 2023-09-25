@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/models/invoice.dart';
-import 'package:tfra_mobile/app/models/sale_summary.dart';
-import 'package:tfra_mobile/app/providers/base_provider.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/models/invoice.dart';
+import 'package:ssmis_tz/app/models/sale_summary.dart';
+import 'package:ssmis_tz/app/providers/base_provider.dart';
 
 class InvoiceProvider extends BaseProvider {
   final String api = '/invoices';
@@ -50,6 +50,7 @@ class InvoiceProvider extends BaseProvider {
     } catch (e, stackTrace) {
       notifyError(e.toString());
       debugPrintStack(stackTrace: stackTrace);
+
     } finally {
       isLoading = false;
     }

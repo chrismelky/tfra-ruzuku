@@ -1,4 +1,4 @@
-import 'package:tfra_mobile/app/models/user.dart';
+import 'package:ssmis_tz/app/models/user.dart';
 
 class LoginResponse {
   final bool isAuthenticated;

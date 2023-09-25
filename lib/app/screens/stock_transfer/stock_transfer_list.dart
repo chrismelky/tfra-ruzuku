@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/providers/stock_transfer_provider.dart';
-import 'package:tfra_mobile/app/screens/stock_transfer/add_transfer.dart';
-import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/providers/stock_transfer_provider.dart';
+import 'package:ssmis_tz/app/screens/stock_transfer/add_transfer.dart';
+import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
 
 class StockTransferListScreen extends StatefulWidget {
   const StockTransferListScreen({Key? key}) : super(key: key);

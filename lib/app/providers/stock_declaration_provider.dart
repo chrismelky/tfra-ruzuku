@@ -1,6 +1,6 @@
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/models/stock_declaration.dart';
-import 'package:tfra_mobile/app/providers/base_provider.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/models/stock_declaration.dart';
+import 'package:ssmis_tz/app/providers/base_provider.dart';
 
 class StockDeclarationProvider extends BaseProvider {
   List<StockDeclaration> _declarations = List.empty(growable: true);
@@ -45,6 +45,7 @@ class StockDeclarationProvider extends BaseProvider {
   }
 
   fetchPremises() async {
+    isLoading = true;
     try {
       var resp = await Api().dio.get('/premises');
       premises = (resp.data['data'] as List<dynamic>)
@@ -53,6 +54,8 @@ class StockDeclarationProvider extends BaseProvider {
       notifyListeners();
     } catch (e) {
       notifyError(e.toString());
+    } finally {
+      isLoading = false;
     }
   }
 }

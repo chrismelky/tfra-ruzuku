@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.example" "\0"
-            VALUE "FileDescription", "tfra_mobile" "\0"
+            VALUE "FileDescription", "ssmis_tz" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "tfra_mobile" "\0"
+            VALUE "InternalName", "ssmis_tz" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2022 com.example. All rights reserved." "\0"
-            VALUE "OriginalFilename", "tfra_mobile.exe" "\0"
-            VALUE "ProductName", "tfra_mobile" "\0"
+            VALUE "OriginalFilename", "ssmis_tz.exe" "\0"
+            VALUE "ProductName", "ssmis_tz" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/models/stock_transfer.dart';
-import 'package:tfra_mobile/app/providers/base_provider.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/models/stock_transfer.dart';
+import 'package:ssmis_tz/app/providers/base_provider.dart';
 
 class StockTransferProvider extends BaseProvider {
   List<StockTransfer> _stockTransfers = List.empty(growable: true);

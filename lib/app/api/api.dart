@@ -4,9 +4,9 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tfra_mobile/app/services/login_service.dart';
-import 'package:tfra_mobile/app/providers/app_state.dart';
-import 'package:tfra_mobile/app/utils/app_const.dart';
+import 'package:ssmis_tz/app/services/login_service.dart';
+import 'package:ssmis_tz/app/providers/app_state.dart';
+import 'package:ssmis_tz/app/utils/app_const.dart';
 
 class Api {
   final dio = createDio();

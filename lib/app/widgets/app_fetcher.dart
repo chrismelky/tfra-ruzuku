@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/db/db.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/db/db.dart';
 
 class AppFetcher extends StatefulWidget {
   final String? api;

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
-import 'package:tfra_mobile/app/screens/declaration/add_declaration.dart';
-import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/providers/stock_declaration_provider.dart';
+import 'package:ssmis_tz/app/screens/declaration/add_declaration.dart';
+import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
 
 class StockDeclarationScreen extends StatefulWidget {
   const StockDeclarationScreen({Key? key}) : super(key: key);

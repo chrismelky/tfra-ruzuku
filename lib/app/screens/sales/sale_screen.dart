@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/screens/sales/add_sale_screen.dart';
-import 'package:tfra_mobile/app/providers/sale_provider.dart';
-import 'package:tfra_mobile/app/utils/helpers.dart';
-import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/screens/sales/add_sale_screen.dart';
+import 'package:ssmis_tz/app/providers/sale_provider.dart';
+import 'package:ssmis_tz/app/utils/helpers.dart';
+import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
 
 class SaleScreen extends StatefulWidget {
   const SaleScreen({super.key});

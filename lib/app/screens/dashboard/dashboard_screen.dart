@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({Key? key}) : super(key: key);

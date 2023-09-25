@@ -1,5 +1,5 @@
 import 'package:intl/intl.dart';
-import 'package:tfra_mobile/app/utils/format_type.dart';
+import 'package:ssmis_tz/app/utils/format_type.dart';
 
 final currency = NumberFormat("#,##0.00", "en_US");
 final dateFormat = DateFormat.yMMMd();

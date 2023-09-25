@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:tfra_mobile/app/utils/app_number_formatter.dart';
-import 'package:tfra_mobile/app/utils/helpers.dart';
+import 'package:ssmis_tz/app/utils/app_number_formatter.dart';
+import 'package:ssmis_tz/app/utils/helpers.dart';
 
 class AppInputNumber extends StatelessWidget {
   final String name;

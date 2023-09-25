@@ -2,10 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/mixin/message_notifier_mixin.dart';
-import 'package:tfra_mobile/app/models/user.dart';
-import 'package:tfra_mobile/app/utils/app_const.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/mixin/message_notifier_mixin.dart';
+import 'package:ssmis_tz/app/models/user.dart';
+import 'package:ssmis_tz/app/utils/app_const.dart';
 
 class AppState with ChangeNotifier, MessageNotifierMixin {
   bool isAuthenticated = false;

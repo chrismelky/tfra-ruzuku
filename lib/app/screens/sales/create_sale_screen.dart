@@ -6,20 +6,20 @@
 // import 'package:go_router/go_router.dart';
 // import 'package:permission_handler/permission_handler.dart';
 // import 'package:provider/provider.dart';
-// import 'package:tfra_mobile/app/api/api.dart';
-// import 'package:tfra_mobile/app/listeners/message_listener.dart';
-// import 'package:tfra_mobile/app/models/client_type.dart';
-// import 'package:tfra_mobile/app/models/sale.dart';
-// import 'package:tfra_mobile/app/models/sale_package.dart';
-// import 'package:tfra_mobile/app/models/sale_status.dart';
-// import 'package:tfra_mobile/app/models/searched_client.dart';
-// import 'package:tfra_mobile/app/screens/sales/otp_dialog.dart';
-// import 'package:tfra_mobile/app/screens/sales/search_client_dialog.dart';
-// import 'package:tfra_mobile/app/shared/shared.dart';
+// import 'package:ssmis_tz/app/api/api.dart';
+// import 'package:ssmis_tz/app/listeners/message_listener.dart';
+// import 'package:ssmis_tz/app/models/client_type.dart';
+// import 'package:ssmis_tz/app/models/sale.dart';
+// import 'package:ssmis_tz/app/models/sale_package.dart';
+// import 'package:ssmis_tz/app/models/sale_status.dart';
+// import 'package:ssmis_tz/app/models/searched_client.dart';
+// import 'package:ssmis_tz/app/screens/sales/otp_dialog.dart';
+// import 'package:ssmis_tz/app/screens/sales/search_client_dialog.dart';
+// import 'package:ssmis_tz/app/shared/shared.dart';
 // import 'package:qrscan/qrscan.dart' as scanner;
-// import 'package:tfra_mobile/app/theme/form_controls.dart';
+// import 'package:ssmis_tz/app/theme/form_controls.dart';
 // import 'package:intl/intl.dart';
-// import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
+// import 'package:ssmis_tz/app/widgets/app_base_popup_screen.dart';
 //
 // class CreateSaleScreen extends StatefulWidget {
 //   const CreateSaleScreen({super.key});

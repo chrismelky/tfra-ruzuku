@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/providers/app_state.dart';
-import 'package:tfra_mobile/app/widgets/app_menu_item.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/providers/app_state.dart';
+import 'package:ssmis_tz/app/widgets/app_menu_item.dart';
 
 class AppBaseScreen extends StatelessWidget {
   final String title;
@@ -73,6 +73,10 @@ class AppBaseScreen extends StatelessWidget {
                       icon: Icons.point_of_sale_outlined,
                       label: 'Sales',
                       route: AppRoutes.sales),
+                  AppMenuItem(
+                      icon: Icons.payments,
+                      label: 'Invoices',
+                      route: AppRoutes.invoice),
                 ])),
             TextButton(
                 onPressed: () => context.read<AppState>().logout(),

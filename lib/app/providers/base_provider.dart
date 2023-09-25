@@ -1,5 +1,5 @@
 import 'package:flutter/cupertino.dart';
-import 'package:tfra_mobile/app/mixin/message_notifier_mixin.dart';
+import 'package:ssmis_tz/app/mixin/message_notifier_mixin.dart';
 
 class BaseProvider extends ChangeNotifier with MessageNotifierMixin {
   bool _isLoading = false;

@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/providers/stock_declaration_provider.dart';
-import 'package:tfra_mobile/app/screens/declaration/add_packaging.dart';
-import 'package:tfra_mobile/app/widgets/app_base_popup_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_fetcher.dart';
-import 'package:tfra_mobile/app/widgets/app_form.dart';
-import 'package:tfra_mobile/app/widgets/app_input_dropdown.dart';
-import 'package:tfra_mobile/app/widgets/app_input_form_array.dart';
-import 'package:tfra_mobile/app/widgets/app_input_number.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/providers/stock_declaration_provider.dart';
+import 'package:ssmis_tz/app/screens/declaration/add_packaging.dart';
+import 'package:ssmis_tz/app/widgets/app_base_popup_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_fetcher.dart';
+import 'package:ssmis_tz/app/widgets/app_form.dart';
+import 'package:ssmis_tz/app/widgets/app_input_dropdown.dart';
+import 'package:ssmis_tz/app/widgets/app_input_form_array.dart';
+import 'package:ssmis_tz/app/widgets/app_input_number.dart';
 
 class AddStockDeclarationScreen extends StatefulWidget {
   final Map<String, dynamic>? formValues;
@@ -46,7 +46,8 @@ class _AddStockDeclarationScreenState extends State<AddStockDeclarationScreen> {
     if (_declaration['cropId'] != null) {
       loadProduct(_declaration['cropId']);
     }
-    context.read<StockDeclarationProvider>().fetchPremises();
+    Future.delayed(Duration.zero,
+        () => context.read<StockDeclarationProvider>().fetchPremises());
     super.initState();
   }
 

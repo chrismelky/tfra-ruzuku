@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:tfra_mobile/app/models/sale_package.dart';
+import 'package:ssmis_tz/app/models/sale_package.dart';
 
 part 'sale.g.dart';
 

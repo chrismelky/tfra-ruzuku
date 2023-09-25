@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/models/client_type.dart';
-import 'package:tfra_mobile/app/models/searched_client.dart';
-import 'package:tfra_mobile/app/shared/shared.dart';
-import 'package:tfra_mobile/app/theme/form_controls.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/models/client_type.dart';
+import 'package:ssmis_tz/app/models/searched_client.dart';
+import 'package:ssmis_tz/app/shared/shared.dart';
+import 'package:ssmis_tz/app/theme/form_controls.dart';
 
 Future<String?> otpDialog(BuildContext context, Map<String, dynamic> payload) {
   String? otp;

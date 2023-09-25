@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
-import 'package:tfra_mobile/app/utils/format_type.dart';
-import 'package:tfra_mobile/app/widgets/app_form.dart';
+import 'package:ssmis_tz/app/utils/format_type.dart';
+import 'package:ssmis_tz/app/widgets/app_form.dart';
 
 class AppFormArrayDisplayColumn {
   final String label;

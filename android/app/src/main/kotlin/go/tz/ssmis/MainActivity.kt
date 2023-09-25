@@ -1,4 +1,4 @@
-package com.example.tfra_mobile
+package go.tz.ssmis
 
 import io.flutter.embedding.android.FlutterActivity
 

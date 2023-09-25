@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:tfra_mobile/app/api/api.dart';
-import 'package:tfra_mobile/app/models/sale.dart';
-import 'package:tfra_mobile/app/providers/base_provider.dart';
+import 'package:ssmis_tz/app/api/api.dart';
+import 'package:ssmis_tz/app/models/sale.dart';
+import 'package:ssmis_tz/app/providers/base_provider.dart';
 
 class SaleProvider extends BaseProvider {
   Sale? sale;

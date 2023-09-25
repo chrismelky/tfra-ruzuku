@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/providers/app_state.dart';
-import 'package:tfra_mobile/app/widgets/app_menu_item.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/providers/app_state.dart';
+import 'package:ssmis_tz/app/widgets/app_menu_item.dart';
 
 class AppBasePopUpScreen extends StatelessWidget {
   final String title;

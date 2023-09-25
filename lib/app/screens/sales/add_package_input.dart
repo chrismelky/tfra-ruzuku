@@ -5,7 +5,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:qrscan/qrscan.dart' as scanner;
-import 'package:tfra_mobile/app/utils/helpers.dart';
+import 'package:ssmis_tz/app/utils/helpers.dart';
 
 class AddPackageInputField extends StatefulWidget {
   final String name;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:tfra_mobile/app/utils/format_type.dart';
-import 'package:tfra_mobile/app/utils/helpers.dart';
+import 'package:ssmis_tz/app/utils/format_type.dart';
+import 'package:ssmis_tz/app/utils/helpers.dart';
 
 class AppDetailColumn {
   final String header;

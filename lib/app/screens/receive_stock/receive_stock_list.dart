@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:tfra_mobile/app/app_routes.dart';
-import 'package:tfra_mobile/app/listeners/message_listener.dart';
-import 'package:tfra_mobile/app/models/stock_transfer.dart';
-import 'package:tfra_mobile/app/providers/receive_stock_provider.dart';
-import 'package:tfra_mobile/app/screens/receive_stock/receive_stock_detail.dart';
-import 'package:tfra_mobile/app/widgets/app_base_screen.dart';
-import 'package:tfra_mobile/app/widgets/app_detail_card.dart';
-import 'package:tfra_mobile/app/widgets/app_icon_button.dart';
+import 'package:ssmis_tz/app/app_routes.dart';
+import 'package:ssmis_tz/app/listeners/message_listener.dart';
+import 'package:ssmis_tz/app/models/stock_transfer.dart';
+import 'package:ssmis_tz/app/providers/receive_stock_provider.dart';
+import 'package:ssmis_tz/app/screens/receive_stock/receive_stock_detail.dart';
+import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
+import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/widgets/app_icon_button.dart';
 
 class ReceiveStockListScreen extends StatefulWidget {
   const ReceiveStockListScreen({Key? key}) : super(key: key);

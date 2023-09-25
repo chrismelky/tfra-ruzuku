@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tfra_mobile/app/screens/login/login_form.dart';
+import 'package:ssmis_tz/app/screens/login/login_form.dart';
 
 class Login extends StatelessWidget {
   const Login({super.key});
