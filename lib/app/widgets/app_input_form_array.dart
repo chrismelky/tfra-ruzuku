@@ -89,7 +89,7 @@ class AppInputFormArray<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FormBuilderField<List<Map<String, dynamic>>>(
+    return FormBuilderField<List<dynamic>>(
         name: name,
         validator: FormBuilderValidators.compose(validators),
         builder: (field) {
@@ -98,7 +98,7 @@ class AppInputFormArray<T> extends StatelessWidget {
   }
 
   Widget _formArrayTable(BuildContext context, FormFieldState field) {
-    List<Map<String, dynamic>> items = field.value ?? [];
+    List<dynamic> items = field.value ?? [];
     return Column(
       children: <Widget>[
         Row(

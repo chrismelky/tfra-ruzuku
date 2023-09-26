@@ -7,6 +7,7 @@ import 'package:ssmis_tz/app/providers/stock_transfer_provider.dart';
 import 'package:ssmis_tz/app/screens/stock_transfer/add_transfer.dart';
 import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
 import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/widgets/app_no_item_found.dart';
 
 class StockTransferListScreen extends StatefulWidget {
   const StockTransferListScreen({Key? key}) : super(key: key);
@@ -35,6 +36,13 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
       ],
       child: Consumer<StockTransferProvider>(
           builder: (_, provider, child) =>
+          !provider.isLoading &&
+              provider.stockTransfers.isEmpty
+              ? NoItemFound(
+            name: 'stock transfer',
+            onReload: () => provider.init(),
+          )
+              :
               ListView.separated(
               itemBuilder: (_, idx) {
                 if (idx < provider.stockTransfers.length) {
@@ -84,11 +92,7 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                   children: [
                     provider.isLoading
                         ? const CircularProgressIndicator()
-                        : provider.stockTransfers.isEmpty
-                            ? const Center(
-                                child: Text('No transfer found'),
-                              )
-                            : TextButton(
+                        : TextButton(
                                 onPressed: () => provider.loadMore(),
                                 child: const Text("Load more.."))
                   ],

@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:ssmis_tz/app/api/api.dart';
 import 'package:ssmis_tz/app/models/stock_declaration.dart';
 import 'package:ssmis_tz/app/providers/base_provider.dart';
@@ -57,5 +58,55 @@ class StockDeclarationProvider extends BaseProvider {
     } finally {
       isLoading = false;
     }
+  }
+
+  Future<Map<String, dynamic>?> save(payload) async {
+    isLoading = true;
+    try {
+      var resp = await (payload['id'] != null
+          ? Api()
+              .dio
+              .put('/subsidy-declarations/${payload['id']}', data: payload)
+          : Api().dio.post('/subsidy-declarations', data: payload));
+      debugPrint("********");
+      debugPrint(resp.data['data'].toString());
+      return resp.data['data'] as Map<String, dynamic>;
+    } catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      notifyError(e.toString());
+    } finally {
+      isLoading = false;
+    }
+    return null;
+  }
+
+  Future<Map<String, dynamic>?> findByUuid(String uuid) async {
+    isLoading = true;
+    try {
+      var resp = await Api().dio.get('/subsidy-declarations/${uuid}');
+      return resp.data['data'] as Map<String, dynamic>;
+    } catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      notifyError(e.toString());
+    } finally {
+      isLoading = false;
+    }
+    return null;
+  }
+
+  Future<bool> addPackage(Map<String, dynamic> payload) async {
+    isLoading = true;
+    try {
+      var resp = await Api()
+          .dio
+          .post('/subsidy-declarations/add-packaging-requests', data: payload);
+      return resp.statusCode == 200;
+    } catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      notifyError(e.toString());
+    } finally {
+      isLoading = false;
+    }
+    return false;
   }
 }

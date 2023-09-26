@@ -4,6 +4,7 @@ import 'package:ssmis_tz/app/listeners/message_listener.dart';
 import 'package:ssmis_tz/app/providers/stock_on_hand_provider.dart';
 import 'package:ssmis_tz/app/widgets/app_base_screen.dart';
 import 'package:ssmis_tz/app/widgets/app_detail_card.dart';
+import 'package:ssmis_tz/app/widgets/app_no_item_found.dart';
 
 class StockOnHandScreen extends StatefulWidget {
   const StockOnHandScreen({Key? key}) : super(key: key);
@@ -27,9 +28,10 @@ class _StockOnHandScreenState extends State<StockOnHandScreen> {
             title: 'Stock On Hand',
             child: Consumer<StockOnHandProvider>(
               builder: (context, provider, child) =>
-              !provider.isLoading && provider.stockOnHand.isEmpty
-                      ? const Center(
-                          child: Text('No Stock on hand found'),
+                  !provider.isLoading && provider.stockOnHand.isEmpty
+                      ? NoItemFound(
+                          name: 'stock on hand',
+                          onReload: () => provider.init(),
                         )
                       : ListView.separated(
                           itemBuilder: (_, idx) {
@@ -49,7 +51,8 @@ class _StockOnHandScreenState extends State<StockOnHandScreen> {
                                       header: 'Stock Quantity',
                                       value: stockCard.quantity),
                                   AppDetailColumn(
-                                      header: 'Stock Bags', value: stockCard.bags),
+                                      header: 'Stock Bags',
+                                      value: stockCard.bags),
                                 ],
                               );
                             }
