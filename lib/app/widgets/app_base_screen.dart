@@ -85,10 +85,6 @@ class AppBaseScreen extends StatelessWidget {
               icon: Icons.point_of_sale_outlined,
               label: 'Sales',
               route: AppRoutes.sales),
-          AppMenuItem(
-              icon: Icons.monetization_on_outlined,
-              label: 'Invoices',
-              route: AppRoutes.invoice),
         ])),
         TextButton(
             onPressed: () => context.read<AppState>().logout(),

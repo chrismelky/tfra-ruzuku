@@ -30,7 +30,7 @@ class SaleProvider extends BaseProvider {
   void fetchSales() async {
     isLoading = true;
     try {
-      var resp = await Api().dio.get(api);
+      var resp = await Api().dio.get('$api?page=$_page');
       sales = (resp.data['data'] as List<dynamic>)
           .map((e) => Sale.fromJson(e))
           .toList();

@@ -35,40 +35,45 @@ class _SaleScreenState extends State<SaleScreen> {
   @override
   Widget build(BuildContext context) {
     return MessageListener<SaleProvider>(
-        child: AppBaseScreen(
-            title: 'Sales',
-            actions: [
-              IconButton(
-                  onPressed: () => _addSale(null), icon: const Icon(Icons.add))
-            ],
-            child: Consumer<SaleProvider>(
-              builder: (context, provider, child) {
-                return !provider.isLoading && provider.sales.isEmpty
+        child: Consumer<SaleProvider>(
+          builder: (context, provider, child) {
+            return AppBaseScreen(
+                title: 'Sales',
+                actions: [
+                  IconButton(
+                      onPressed: () => provider.init(),
+                      icon: const Icon(Icons.refresh)),
+                  IconButton(
+                      onPressed: () => _addSale(null),
+                      icon: const Icon(Icons.add))
+                ],
+                child: !provider.isLoading && provider.sales.isEmpty
                     ? NoItemFound(
-                        name: 'sales',
-                        onReload: () => provider.init(),
-                      )
+                  name: 'sales',
+                  onReload: () => provider.init(),
+                )
                     : ListView.separated(
-                        itemBuilder: (_, idx) {
-                          if (idx < provider.sales.length) {
-                            var sale = provider.sales[idx];
-                            return AppDetailCard(
-                              data: {},
-                              columns: [
-                                AppDetailColumn(
-                                    header: 'Customer', value: sale.partyName),
-                                AppDetailColumn(
-                                    header: 'Items',
-                                    value: sale.saleTransactionPackages.length),
-                                AppDetailColumn(
-                                    header: 'Quantity',
-                                    value: sale.totalQuantity),
-                                AppDetailColumn(
-                                    header: 'Total Amount',
-                                    value: currency.format(sale.totalPrice))
-                              ],
-                              title: sale.saleStatus,
-                              actionBuilder: (item) => Row(
+                    itemBuilder: (_, idx) {
+                      if (idx < provider.sales.length) {
+                        var sale = provider.sales[idx];
+                        return AppDetailCard(
+                          data: {},
+                          columns: [
+                            AppDetailColumn(
+                                header: 'Customer', value: sale.partyName),
+                            AppDetailColumn(
+                                header: 'Items',
+                                value: sale.saleTransactionPackages.length),
+                            AppDetailColumn(
+                                header: 'Quantity',
+                                value: sale.totalQuantity),
+                            AppDetailColumn(
+                                header: 'Total Amount',
+                                value: currency.format(sale.totalPrice))
+                          ],
+                          title: sale.saleStatus,
+                          actionBuilder: (item) =>
+                              Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
                                   if (sale.saleStatus == 'NEW')
@@ -77,22 +82,22 @@ class _SaleScreenState extends State<SaleScreen> {
                                         icon: const Icon(Icons.edit))
                                 ],
                               ),
-                            );
-                          }
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              provider.isLoading
-                                  ? const CircularProgressIndicator()
-                                  : TextButton(
-                                          onPressed: () => provider.loadMore(),
-                                          child: const Text("Load more.."))
-                            ],
-                          );
-                        },
-                        separatorBuilder: (_, idx) => const Divider(),
-                        itemCount: provider.sales.length +1);
-              },
-            )));
+                        );
+                      }
+                      return Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          provider.isLoading
+                              ? const CircularProgressIndicator()
+                              : TextButton(
+                              onPressed: () => provider.loadMore(),
+                              child: const Text("Load more.."))
+                        ],
+                      );
+                    },
+                    separatorBuilder: (_, idx) => const Divider(),
+                    itemCount: provider.sales.length + 1));
+          },
+        ));
   }
 }

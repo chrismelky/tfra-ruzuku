@@ -6,12 +6,12 @@ import 'package:ssmis_tz/app/screens/app_notifier.dart';
 import 'package:ssmis_tz/app/screens/change_password/change_password_screen.dart';
 import 'package:ssmis_tz/app/screens/dashboard/dashboard_screen.dart';
 import 'package:ssmis_tz/app/screens/declaration/declaration_screen.dart';
-import 'package:ssmis_tz/app/screens/invoice/invoice_list.dart';
+import 'package:ssmis_tz/app/screens/invoice/invoice_screen.dart';
 import 'package:ssmis_tz/app/screens/login/login.dart';
-import 'package:ssmis_tz/app/screens/receive_stock/receive_stock_list.dart';
+import 'package:ssmis_tz/app/screens/receive_stock/receive_stock_screen.dart';
 import 'package:ssmis_tz/app/screens/sales/sale_screen.dart';
 import 'package:ssmis_tz/app/screens/stock_on_hand/stock_on_hand_screen.dart';
-import 'package:ssmis_tz/app/screens/stock_transfer/stock_transfer_list.dart';
+import 'package:ssmis_tz/app/screens/stock_transfer/stock_transfer_screen.dart';
 
 class AppRoutes {
   static const String dashboard = "/";

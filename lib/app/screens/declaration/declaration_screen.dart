@@ -35,16 +35,19 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
   @override
   Widget build(BuildContext context) {
     return MessageListener<StockDeclarationProvider>(
-      child: AppBaseScreen(
-        title: "Stock Request",
-        actions: [
-          IconButton(
-              onPressed: () => _addDeclaration(null),
-              icon: const Icon(Icons.add))
-        ],
-        child: Consumer<StockDeclarationProvider>(
-            builder: (_, provider, child) => !provider.isLoading &&
-                    provider.declarations.isEmpty
+      child: Consumer<StockDeclarationProvider>(
+        builder: (context, provider, child) {
+          return AppBaseScreen(
+            title: "Stock Request",
+            actions: [
+              IconButton(
+                  onPressed: () => provider.init(),
+                  icon: const Icon(Icons.refresh)),
+              IconButton(
+                  onPressed: () => _addDeclaration(null),
+                  icon: const Icon(Icons.add))
+            ],
+            child: !provider.isLoading && provider.declarations.isEmpty
                 ? NoItemFound(
                     name: 'stock request',
                     onReload: () => provider.init(),
@@ -125,7 +128,9 @@ class _StockDeclarationScreenState extends State<StockDeclarationScreen> {
                       );
                     },
                     separatorBuilder: (context, idx) => const Divider(),
-                    itemCount: provider.declarations.length + 1)),
+                    itemCount: provider.declarations.length + 1),
+          );
+        },
       ),
     );
   }

@@ -25,6 +25,7 @@ class AppDetailCard extends StatelessWidget {
   final List<AppDetailColumn> columns;
   final double? elevation;
   final Widget Function(Map<String, dynamic>? row)? actionBuilder;
+  final IconData? icon;
 
   const AppDetailCard(
       {Key? key,
@@ -33,7 +34,7 @@ class AppDetailCard extends StatelessWidget {
       this.actionBuilder,
       required this.title,
       this.subTitle,
-      this.elevation})
+      this.elevation, this.icon})
       : super(key: key);
 
   static const TextStyle headerStyle = TextStyle(
@@ -53,8 +54,12 @@ class AppDetailCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              mainAxisAlignment: MainAxisAlignment.start,
               children: [
+                if(icon != null)
+                  Icon(icon),
+                if(icon !=null)
+                 const SizedBox(width: 8,),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
