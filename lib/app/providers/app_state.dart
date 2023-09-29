@@ -38,6 +38,7 @@ class AppState extends BaseProvider {
   }
 
   void login(dynamic logins) async {
+    isLoading = true;
     try {
       var response = await Api().dio.post("/users/authenticate", data: logins);
       user = User.fromJson(response.data['data']['user']);
@@ -51,9 +52,11 @@ class AppState extends BaseProvider {
       passwordChanged = user!.passwordChanged;
       sessionHasBeenFetched = true;
       notifyListeners();
-    } catch (e) {
+    } catch (e, stackTrace) {
       notifyError(e.toString());
-      debugPrint(e.toString());
+      debugPrintStack(stackTrace: stackTrace);
+    } finally {
+      isLoading = false;
     }
   }
 
@@ -61,11 +64,12 @@ class AppState extends BaseProvider {
     isLoading = true;
     try {
       var payload = {'newPassword': newPassword, 'userUuid': user!.uuid!};
-      var response = await Api().dio.post("/users/change-password", data: payload);
-      if(response.statusCode == 200) {
+      var response =
+          await Api().dio.post("/users/change-password", data: payload);
+      if (response.statusCode == 200) {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         final String? userString = prefs.getString(AppConst.userKey);
-        Map<String, dynamic> userJson= await jsonDecode(userString!);
+        Map<String, dynamic> userJson = await jsonDecode(userString!);
         userJson['passwordChanged'] = true;
         user = User.fromJson(jsonDecode(userString));
         await prefs.setString(AppConst.userKey, jsonEncode(user));
