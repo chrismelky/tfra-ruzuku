@@ -3,14 +3,14 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ssmis_tz/app/api/api.dart';
-import 'package:ssmis_tz/app/mixin/message_notifier_mixin.dart';
 import 'package:ssmis_tz/app/models/user.dart';
+import 'package:ssmis_tz/app/providers/base_provider.dart';
 import 'package:ssmis_tz/app/utils/app_const.dart';
 
-class AppState with ChangeNotifier, MessageNotifierMixin {
+class AppState extends BaseProvider {
   bool isAuthenticated = false;
   bool sessionHasBeenFetched = false;
-  bool isLoading = false;
+  bool passwordChanged = true;
   User? user;
   String? errorMessage;
 
@@ -23,6 +23,7 @@ class AppState with ChangeNotifier, MessageNotifierMixin {
         user = User.fromJson(jsonDecode(userString));
         isAuthenticated = true;
       }
+      passwordChanged = user?.passwordChanged ?? false;
       sessionHasBeenFetched = true;
       notifyListeners();
     } catch (e) {
@@ -47,11 +48,35 @@ class AppState with ChangeNotifier, MessageNotifierMixin {
       await prefs.setString(AppConst.userKey, jsonEncode(user));
       await prefs.setString(AppConst.tokenKey, token);
       isAuthenticated = true;
+      passwordChanged = user!.passwordChanged;
       sessionHasBeenFetched = true;
       notifyListeners();
     } catch (e) {
       notifyError(e.toString());
       debugPrint(e.toString());
+    }
+  }
+
+  void changePassword(String newPassword) async {
+    isLoading = true;
+    try {
+      var payload = {'newPassword': newPassword, 'userUuid': user!.uuid!};
+      var response = await Api().dio.post("/users/change-password", data: payload);
+      if(response.statusCode == 200) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        final String? userString = prefs.getString(AppConst.userKey);
+        Map<String, dynamic> userJson= await jsonDecode(userString!);
+        userJson['passwordChanged'] = true;
+        user = User.fromJson(jsonDecode(userString));
+        await prefs.setString(AppConst.userKey, jsonEncode(user));
+        passwordChanged = true;
+        notifyListeners();
+      }
+    } catch (e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      notifyError(e.toString());
+    } finally {
+      isLoading = false;
     }
   }
 

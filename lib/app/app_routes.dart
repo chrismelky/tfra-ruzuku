@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:ssmis_tz/app/providers/app_state.dart';
 import 'package:ssmis_tz/app/screens/app_notifier.dart';
+import 'package:ssmis_tz/app/screens/change_password/change_password_screen.dart';
 import 'package:ssmis_tz/app/screens/dashboard/dashboard_screen.dart';
 import 'package:ssmis_tz/app/screens/declaration/declaration_screen.dart';
 import 'package:ssmis_tz/app/screens/invoice/invoice_list.dart';
@@ -21,6 +22,7 @@ class AppRoutes {
   static const String invoice = "/invoice";
   static const String stockOnHand = "/stock_on_hand";
   static const String login = "/login";
+  static const String changePassword = "/change_password";
 
   final _rootNavigatorKey = GlobalKey<NavigatorState>();
   final _shellNavigatorKey = GlobalKey<NavigatorState>();
@@ -55,6 +57,11 @@ class AppRoutes {
         builder: (BuildContext context, GoRouterState state) => const Login(),
       ),
       GoRoute(
+        path: changePassword,
+        builder: (BuildContext context, GoRouterState state) =>
+            const ChangePasswordScreen(),
+      ),
+      GoRoute(
         path: declaration,
         builder: (BuildContext context, GoRouterState state) =>
             const StockDeclarationScreen(),
@@ -70,10 +77,10 @@ class AppRoutes {
             const ReceiveStockListScreen(),
       ),
       GoRoute(
-        path: stockOnHand,
-        builder: (BuildContext context, GoRouterState state) =>
-            const StockOnHandScreen()), 
-    GoRoute(
+          path: stockOnHand,
+          builder: (BuildContext context, GoRouterState state) =>
+              const StockOnHandScreen()),
+      GoRoute(
         path: sales,
         builder: (BuildContext context, GoRouterState state) =>
             const SaleScreen(),
@@ -107,11 +114,13 @@ class AppRoutes {
         ],
         redirect: (context, state) {
           final loggedIn = appState.isAuthenticated;
-          final loggingIn = state.subloc == '/login';
-          if (!loggedIn) return loggingIn ? null : '/login';
-
-          if (loggingIn) return '/';
-
+          final passwordChanged = appState.passwordChanged;
+          final isLoggingRoute = state.subloc == '/login';
+          final isChangePassword = state.subloc == changePassword;
+          if (!loggedIn) return isLoggingRoute ? null : '/login';
+          if (loggedIn && !passwordChanged) return changePassword;
+          if ((isLoggingRoute && loggedIn) ||
+              (isChangePassword && passwordChanged)) return dashboard;
           return null;
         },
       );
