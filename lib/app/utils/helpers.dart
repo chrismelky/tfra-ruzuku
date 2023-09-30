@@ -2,6 +2,7 @@ import 'package:intl/intl.dart';
 import 'package:ssmis_tz/app/utils/format_type.dart';
 
 final currency = NumberFormat("#,##0.00", "en_US");
+final integer = NumberFormat("#,##0", "en_US");
 final dateFormat = DateFormat.yMMMd();
 final dateTimeFormat = DateFormat('yyyy-MM-dd HH:mm:ss');
 

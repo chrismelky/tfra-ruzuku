@@ -26,6 +26,7 @@ class AppInputInteger extends StatelessWidget {
         name: name,
         validator: FormBuilderValidators.compose(validators),
         builder: ((field) {
+          int iin=(field.value ?? initialValue ?? 0).toDouble().floor();
           return TextFormField(
               textAlign: TextAlign.end,
               decoration: InputDecoration(
@@ -35,7 +36,7 @@ class AppInputInteger extends StatelessWidget {
                   ),
                 suffix: suffix
               ),
-              initialValue: (field.value ?? initialValue ?? 0).toString(),
+              initialValue: iin.toString(),
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 field.didChange(value.isNotEmpty ? int.parse(value) : 0);

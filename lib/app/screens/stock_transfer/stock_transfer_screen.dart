@@ -50,7 +50,10 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                     if (idx < provider.stockTransfers.length) {
                       var transfer = provider.stockTransfers[idx];
                       return AppDetailCard(
-                        title: transfer.transactionType,
+                        title: transfer.transactionType.replaceAll("_", " "),
+                        icon: transfer.transactionType == 'PREMISE_TRANSFER'
+                            ? Icons.house_siding
+                            : Icons.business,
                         data: transfer.toJson(),
                         columns: [
                           AppDetailColumn(
@@ -63,7 +66,7 @@ class _StockTransferListScreenState extends State<StockTransferListScreen> {
                               header: 'Status',
                               value: transfer.transactionStatus),
                           AppDetailColumn(
-                              header: 'Total Quantity',
+                              header: 'Total Quantity(Kg)',
                               value: transfer.totalQuantity),
                           AppDetailColumn(
                               header: 'Bags', value: transfer.totalBags)

@@ -11,8 +11,8 @@ class StockTransferItem {
   final int packagingOptionId;
   final String packagingOptionName;
   final int bags;
-  final double quantity;
-  final double? availableQty;
+  final num quantity;
+  final num? availableQty;
   final String? stockCardUuid;
 
   StockTransferItem(

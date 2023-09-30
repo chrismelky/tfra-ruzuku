@@ -13,8 +13,8 @@ class ProductStep extends StatefulWidget {
   final Map<String, dynamic> formValues;
   final Function? onNextStep;
 
-
-  const ProductStep({Key? key, required this.formValues, this.onNextStep}) : super(key: key);
+  const ProductStep({Key? key, required this.formValues, this.onNextStep})
+      : super(key: key);
 
   @override
   State<ProductStep> createState() => _ProductStepState();
@@ -23,7 +23,6 @@ class ProductStep extends StatefulWidget {
 class _ProductStepState extends State<ProductStep> {
   final _productForm = GlobalKey<FormBuilderState>();
   List<Map<String, dynamic>> products = List.empty(growable: true);
-
 
   @override
   void initState() {
@@ -56,17 +55,16 @@ class _ProductStepState extends State<ProductStep> {
               AppFetcher(
                   api: '/subsidy-declarations/declaration-types',
                   builder: (items, isLoading) => AppInputDropDown(
-                    items: items,
-                    name: 'declarationType',
-                    label: isLoading
-                        ? 'Loading..'
-                        : 'Declaration Type',
-                  )),
+                        items: items,
+                        name: 'declarationType',
+                        label: isLoading ? 'Loading..' : 'Declaration Type',
+                      )),
               AppFetcher(
                   api: '/crops',
                   builder: (items, isLoading) => AppInputDropDown(
                       onChange: (cropId) {
-                        _productForm.currentState!.fields['productId']!.didChange(null);
+                        _productForm.currentState!.fields['productId']!
+                            .didChange(null);
                         loadProduct(cropId);
                       },
                       items: items,
@@ -80,7 +78,7 @@ class _ProductStepState extends State<ProductStep> {
                 displayValue: 'productName',
               ),
               const AppInputNumber(
-                  name: 'quantity', label: 'Quantity'),
+                  noDecimal: true, name: 'quantity', label: 'Quantity'),
               AppButton(onPress: () => _validateAndNext(), label: 'NEXT')
             ]);
       },
@@ -89,7 +87,7 @@ class _ProductStepState extends State<ProductStep> {
 
   _validateAndNext() {
     if (_productForm.currentState?.saveAndValidate() == true) {
-     widget.onNextStep!(_productForm.currentState?.value);
+      widget.onNextStep!(_productForm.currentState?.value);
     }
   }
 }

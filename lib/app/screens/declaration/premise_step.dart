@@ -70,6 +70,7 @@ class _PremiseStepState extends State<PremiseStep> {
                 AppInputNumber(
                   name: 'quantity',
                   label: 'Quantity',
+                  noDecimal: true,
                   validators: [
                     FormBuilderValidators.required(
                         errorText: "Quantity is required"),

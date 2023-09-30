@@ -13,12 +13,13 @@ import 'package:ssmis_tz/app/widgets/app_input_number.dart';
 
 class AddPackaging extends StatefulWidget {
   final Map<String, dynamic> declarationPremise;
+  final int index;
   final Function onPackageStepSaved;
 
   const AddPackaging(
       {Key? key,
       required this.declarationPremise,
-      required this.onPackageStepSaved})
+      required this.onPackageStepSaved, required this.index})
       : super(key: key);
 
   @override
@@ -54,7 +55,7 @@ class _AddPackagingState extends State<AddPackaging> {
       var result =
           await context.read<StockDeclarationProvider>().addPackage(payload);
       if (result) {
-        widget.onPackageStepSaved();
+        widget.onPackageStepSaved(widget.index);
       }
     }
   }
@@ -88,6 +89,7 @@ class _AddPackagingState extends State<AddPackaging> {
               AppInputNumber(
                   name: 'quantity',
                   label: 'Quantity',
+                  noDecimal: true,
                   validators: [FormBuilderValidators.required()]),
             ],
             displayColumns: [

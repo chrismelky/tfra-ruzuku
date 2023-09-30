@@ -11,6 +11,7 @@ class AppBasePopUpScreen extends StatelessWidget {
   final bool? isLoading;
   final List<Widget>? actions;
   final Widget? leading;
+  final double padding;
 
   const AppBasePopUpScreen({
     Key? key,
@@ -20,6 +21,7 @@ class AppBasePopUpScreen extends StatelessWidget {
     this.floatingButton,
     this.actions,
     this.leading,
+    this.padding = 8,
   }) : super(key: key);
 
   @override
@@ -37,17 +39,13 @@ class AppBasePopUpScreen extends StatelessWidget {
       ),
       backgroundColor: Colors.indigo[50],
       body: Container(
-        padding: const EdgeInsets.all(8),
+        padding:  EdgeInsets.all(padding),
         child: Stack(
           alignment: AlignmentDirectional.center,
           children: [
             Align(
               alignment: Alignment.topCenter,
-              child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8),
-                child: child,
-              ),
+              child: child,
             ),
             isLoading! ? const CircularProgressIndicator() : Container(),
           ],

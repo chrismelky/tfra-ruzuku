@@ -88,11 +88,13 @@ class _ReceiveStockDetailScreenState extends State<ReceiveStockDetailScreen> {
                       const AppInputNumber(
                         name: 'quantity',
                         label: 'Quantity Transferred',
+                        noDecimal: true,
                         enabled: false,
                       ),
                       AppInputNumber(
                         name: 'receivedQuantity',
                         label: 'Quantity Received',
+                        noDecimal: true,
                         validators: [
                           FormBuilderValidators.required(
                               errorText: "Received quantity required")

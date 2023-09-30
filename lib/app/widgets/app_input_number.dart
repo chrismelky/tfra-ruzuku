@@ -13,6 +13,7 @@ class AppInputNumber extends StatelessWidget {
   final List<String? Function(double?)> validators;
   final num? initialValue;
   final bool enabled;
+  final bool noDecimal;
   final Function? onChanged;
 
 
@@ -24,12 +25,12 @@ class AppInputNumber extends StatelessWidget {
       this.validators = const [],
       this.initialValue,
         this.enabled = true,
-        this.onChanged});
+        this.onChanged,  this.noDecimal = false});
 
   _toDouble(String value) {
     String asNumber = value.replaceAll(RegExp('[^0-9]'), '');
     num _newNum = num.tryParse(asNumber) ?? 0;
-    _newNum /= pow(10, 2);
+    _newNum /= noDecimal ? pow(10, 0) : pow(10, 2);
     return _newNum.toDouble();
   }
 
@@ -39,17 +40,18 @@ class AppInputNumber extends StatelessWidget {
         name: name,
         validator: FormBuilderValidators.compose(validators),
         builder: ((field) {
+         var  value =field.value ?? initialValue ?? 0.0;
           return TextFormField(
             textAlign: TextAlign.end,
               style: const TextStyle(fontSize: 14),
-              inputFormatters: [AppNumberFormatter()],
+              inputFormatters: [AppNumberFormatter(noDecimal: noDecimal)],
               enabled: enabled,
               decoration: InputDecoration(
                 label: Text(label),
                 errorText: field.errorText,
               ),
               initialValue:
-                  (currency.format(field.value ?? initialValue ?? 0.0)),
+                noDecimal?  integer.format(value): currency.format(value),
               keyboardType: TextInputType.number,
               onChanged: (value) {
                 field.didChange(value.isNotEmpty ? _toDouble(value) : 0.00);
