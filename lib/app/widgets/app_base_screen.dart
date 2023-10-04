@@ -67,7 +67,7 @@ class AppBaseScreen extends StatelessWidget {
               icon: Icons.home, label: 'Home', route: AppRoutes.dashboard),
           AppMenuItem(
               icon: Icons.list_alt_outlined,
-              label: 'Stock Declaration',
+              label: 'Stock Request',
               route: AppRoutes.declaration),
           AppMenuItem(
               icon: Icons.shopping_bag_outlined,

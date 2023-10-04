@@ -1,5 +1,5 @@
 abstract class AppConst {
-  static const userKey = 'FIS_USER';
-  static const tokenKey = 'FIS_TOKEN';
-  static const refreshTokenKey = 'FIS_REFRESH_TOKEN';
+  static const userKey = 'SSMS_USER';
+  static const tokenKey = 'SSMS_TOKEN';
+  static const refreshTokenKey = 'SSMS_REFRESH_TOKEN';
 }

@@ -22,7 +22,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
         children: [
           buildCard("Sales", Icons.point_of_sale_outlined, AppRoutes.sales),
           buildCard(
-              "Declarations", Icons.list_alt_outlined, AppRoutes.declaration),
+              "Stock Request", Icons.list_alt_outlined, AppRoutes.declaration),
           buildCard("Transfer Stock", Icons.shopping_bag_outlined, AppRoutes.transfer),
           buildCard(
               "Receive Stock", Icons.receipt_long_sharp, AppRoutes.receive),

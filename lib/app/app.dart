@@ -33,7 +33,7 @@ class _AppState extends State<App> {
                     routeInformationProvider: _router.routeInformationProvider,
                     routeInformationParser: _router.routeInformationParser,
                     routerDelegate: _router.routerDelegate,
-                    title: 'Fis',
+                    title: 'SSMS',
                     localizationsDelegates: const [
                       FormBuilderLocalizations.delegate,
                     ],

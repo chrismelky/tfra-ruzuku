@@ -7,8 +7,14 @@ class AppInputDate extends StatelessWidget {
   final String name;
   final String label;
   final List<String? Function(dynamic)> validators;
+  final bool disabled;
 
-  const AppInputDate({Key? key, required this.name, required this.label,  this.validators =const []})
+  const AppInputDate(
+      {Key? key,
+      required this.name,
+      required this.label,
+      this.validators = const [],
+      this.disabled = false})
       : super(key: key);
 
   @override
@@ -18,11 +24,11 @@ class AppInputDate extends StatelessWidget {
       name: name,
       validator: FormBuilderValidators.compose(validators),
       fieldLabelText: label,
+      enabled: !disabled,
       inputType: InputType.date,
       decoration: InputDecoration(
-        hintText: label,
-        suffixIcon: const Icon(Icons.calendar_month)
-      ),
+        label: Text(label),
+          suffixIcon: const Icon(Icons.calendar_month)),
     );
   }
 }

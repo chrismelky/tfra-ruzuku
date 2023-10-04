@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:ssmis_tz/app/api/api.dart';
 import 'package:ssmis_tz/app/models/sale.dart';
+import 'package:ssmis_tz/app/models/stock_package.dart';
 import 'package:ssmis_tz/app/providers/base_provider.dart';
 
 class SaleProvider extends BaseProvider {
@@ -91,6 +92,24 @@ class SaleProvider extends BaseProvider {
     try {
       var resp = await Api().dio.post("/sales/generate-otp", data: payload);
       return [200, 201].contains(resp.statusCode);
+    }catch(e, stackTrace) {
+      debugPrintStack(stackTrace: stackTrace);
+      notifyError(e.toString());
+    } finally {
+      isLoading = false;
+    }
+    return null;
+  }
+
+  Future<StockPackage?> fetchPackage(String qrCode) async {
+    isLoading = true;
+    try {
+      var resp = await Api()
+          .dio
+          .get("/stock-packages/in-stock/$qrCode");
+      if (resp.statusCode == 200) {
+        return StockPackage.fromJson(resp.data['data']);
+      }
     }catch(e, stackTrace) {
       debugPrintStack(stackTrace: stackTrace);
       notifyError(e.toString());

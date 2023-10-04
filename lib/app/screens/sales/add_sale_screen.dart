@@ -33,14 +33,14 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
   @override
   void initState() {
     _selectedSale = widget.sale;
-    List<Map<String, dynamic>> saleTransactionPackages = [];
     _initialFormValues = _selectedSale != null
         ? {
             ..._selectedSale!.toJson(),
             'transactionDate': _selectedSale?.transactionDate
           }
-        : {"saleTransactionPackages": saleTransactionPackages};
-    debugPrint(_initialFormValues.toString());
+        : {
+      "transactionDate": DateTime.now(),
+      "saleTransactionPackages": List<Map<String, dynamic>>.empty(growable: true)};
     super.initState();
   }
 
@@ -115,16 +115,25 @@ class _AddSaleScreenState extends State<AddSaleScreen> {
                     formKey: _formKey,
                     initialValue: _initialFormValues,
                     controls: [
-                       AppInputDate(
-                          name: 'transactionDate', label: 'Transaction Date',
-                          validators: [FormBuilderValidators.required(errorText: "Transaction date is required")]
-                      ),
+                      AppInputDate(
+                          name: 'transactionDate',
+                          label: 'Transaction Date',
+                          disabled: true,
+                          validators: [
+                            FormBuilderValidators.required(
+                                errorText: "Transaction date is required")
+                          ]),
                       AppInputDropDown(
-                          items: ClientType.values
-                              .map((e) => {'id': e.name, 'name': e.name})
-                              .toList(),
-                          name: 'partyType',
-                          label: 'Client Type', validators: [FormBuilderValidators.required(errorText: "Client is required")],),
+                        items: ClientType.values
+                            .map((e) => {'id': e.name, 'name': e.name})
+                            .toList(),
+                        name: 'partyType',
+                        label: 'Client Type',
+                        validators: [
+                          FormBuilderValidators.required(
+                              errorText: "Client is required")
+                        ],
+                      ),
                       ClientSelectField(
                           name: 'partyId',
                           clientName: _selectedSale?.partyName,
